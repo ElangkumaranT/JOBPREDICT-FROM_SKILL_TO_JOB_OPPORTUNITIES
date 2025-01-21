@@ -1,0 +1,17 @@
+CREATE DATABASE job_database;
+
+USE job_database;
+
+CREATE TABLE jobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    job_role VARCHAR(255) NOT NULL,
+    salary DECIMAL(10, 2) NOT NULL,
+    experience INT NOT NULL,
+    skillset TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+
+
+"RolePredict: From Skills to Job Opportunities"
+"CareerPredict: Predicting Roles and Guiding You to Jobs"

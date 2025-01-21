@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Job</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .job-form {
+            background: white;
+            padding: 20px;
+          
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 700px;
+        }
+        .job-form h2 {
+            margin-bottom: 15px;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            flex: 1;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: rgb(231, 223, 223);
+        }
+        .post-btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button1 {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button1:hover {
+      background-color: #0056b3;
+    }
+    </style>
+</head>
+<body>
+
+    <button class="back-button1" onclick="history.back()">Back</button>
+
+<div class="job-form">
+    <h2>Post Job</h2>
+    <form action="submit.php" method="POST">
+        
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" id="jobTitle" name="jobTitle" placeholder="Job title *" required>
+            </div>
+            <div class="form-group">
+                <select id="jobType" name="jobType" required>
+                    <option value="full-time">Full time</option>
+                    <option value="part-time">Part time</option>
+                    <option value="contract">Contract</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <input type="text" id="companyName" name="companyName" placeholder="Company name *" required>
+            </div>
+            <div class="form-group">
+                <input type="url" id="companyUrl" name="companyUrl" placeholder="Company URL">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <select id="jobLocation" name="jobLocation" required>
+                    <option value="remote">Remote</option>
+                    <option value="onsite">Onsite</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="url" id="applyLink" name="applyLink" placeholder="Apply link *" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <input type="number" id="salary" name="salary" placeholder="Salary *" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="experience" name="experience" placeholder="Experience (years) *" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="skills" name="skills" placeholder="Skills *" required>
+        </div>
+
+        <div class="form-group">
+            <textarea id="jobDescription" name="jobDescription" rows="3" placeholder="Job description *" required></textarea>
+        </div>
+
+        <p style="color: red; font-size: 12px;">* Required fields</p>
+
+        <button type="submit" class="post-btn">Post job</button>
+    </form>
+</div>
+
+</body>
+</html>

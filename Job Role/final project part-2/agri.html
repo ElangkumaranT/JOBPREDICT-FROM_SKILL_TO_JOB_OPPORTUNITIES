@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agricultural Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Agricultural Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    const rolesData = [
+  {
+    role: 'Agricultural Engineer',
+    basic: [
+      { tech: 'Soil Science', note: 'Study of soil properties and management for agriculture', link: 'https://en.wikipedia.org/wiki/Soil_science' },
+      { tech: 'Irrigation', note: 'Design and management of water distribution systems for crops', link: 'https://en.wikipedia.org/wiki/Irrigation' }
+    ],
+    main: [
+      { tech: 'Tractors', note: 'Design and utilization of tractors for agricultural tasks', link: 'https://en.wikipedia.org/wiki/Tractor' },
+      { tech: 'Farm Machinery', note: 'Engineering and use of machinery for efficient farming', link: 'https://en.wikipedia.org/wiki/Agricultural_machinery' }
+    ]
+  },
+  {
+    role: 'Irrigation Engineer',
+    basic: [
+      { tech: 'Water Resources', note: 'Management of water supplies for agricultural use', link: 'https://en.wikipedia.org/wiki/Water_resources' },
+      { tech: 'Soil Moisture', note: 'Monitoring and optimizing soil moisture levels', link: 'https://en.wikipedia.org/wiki/Soil_moisture' }
+    ],
+    main: [
+      { tech: 'Drip Irrigation', note: 'Efficient water delivery system directly to plant roots', link: 'https://en.wikipedia.org/wiki/Drip_irrigation' },
+      { tech: 'Sprinkler Systems', note: 'Overhead irrigation systems for crop watering', link: 'https://en.wikipedia.org/wiki/Sprinkler_irrigation' }
+    ]
+  },
+  {
+    role: 'Farm Machinery Engineer',
+    basic: [
+      { tech: 'Mechanical Engineering', note: 'Application of mechanical principles in agricultural tools', link: 'https://en.wikipedia.org/wiki/Mechanical_engineering' },
+      { tech: 'Farm Equipment', note: 'Development and maintenance of agricultural tools', link: 'https://en.wikipedia.org/wiki/Farm_equipment' }
+    ],
+    main: [
+      { tech: 'Tractor Design', note: 'Creating tractors for various farming needs', link: 'https://en.wikipedia.org/wiki/Tractor' },
+      { tech: 'Automated Harvesting', note: 'Developing machinery for automated crop harvesting', link: 'https://en.wikipedia.org/wiki/Harvesting' }
+    ]
+  },
+ {
+    role: 'Soil Scientist',
+    basic: [
+      { tech: 'Soil Fertility', note: 'Enhancing soil nutrients for better crop production', link: 'https://en.wikipedia.org/wiki/Soil_fertility' },
+      { tech: 'Soil Conservation', note: 'Preventing soil erosion and degradation', link: 'https://en.wikipedia.org/wiki/Soil_conservation' }
+    ],
+    main: [
+      { tech: 'Soil Testing', note: 'Analyzing soil properties for agricultural use', link: 'https://en.wikipedia.org/wiki/Soil_testing' },
+      { tech: 'Erosion Control', note: 'Techniques to prevent soil erosion in farming areas', link: 'https://en.wikipedia.org/wiki/Erosion_control' }
+    ]
+  },
+  {
+    role: 'Agricultural Economist',
+    basic: [
+      { tech: 'Economics', note: 'Applying economic principles to agricultural practices', link: 'https://en.wikipedia.org/wiki/Economics' },
+      { tech: 'Agricultural Systems', note: 'Understanding agricultural production systems', link: 'https://en.wikipedia.org/wiki/Agricultural_system' }
+    ],
+    main: [
+      { tech: 'Farm Management', note: 'Optimizing resources and planning for profitability', link: 'https://en.wikipedia.org/wiki/Farm_management' },
+      { tech: 'Market Analysis', note: 'Studying market trends for agricultural products', link: 'https://en.wikipedia.org/wiki/Market_analysis' }
+    ]
+  },
+  {
+    role: 'Crop Production Specialist',
+    basic: [
+      { tech: 'Crop Management', note: 'Managing crops for optimal growth and yield', link: 'https://en.wikipedia.org/wiki/Crop_management' },
+      { tech: 'Agronomy', note: 'Science of soil management and crop production', link: 'https://en.wikipedia.org/wiki/Agronomy' }
+    ],
+    main: [
+      { tech: 'Precision Agriculture', note: 'Using technology to optimize farming practices', link: 'https://en.wikipedia.org/wiki/Precision_agriculture' },
+      { tech: 'Plant Genetics', note: 'Improving crop traits through genetic research', link: 'https://en.wikipedia.org/wiki/Plant_genetics' }
+    ]
+  },
+  {
+    role: 'Agricultural Technician',
+    basic: [
+      { tech: 'Field Operations', note: 'Conducting on-site agricultural tasks', link: 'https://en.wikipedia.org/wiki/Field_operations' },
+      { tech: 'Equipment Operation', note: 'Operating machinery for agricultural purposes', link: 'https://en.wikipedia.org/wiki/Agricultural_machinery' }
+    ],
+    main: [
+      { tech: 'Farm Maintenance', note: 'Ensuring functionality of farm tools and systems', link: 'https://en.wikipedia.org/wiki/Farm' },
+      { tech: 'Crop Monitoring', note: 'Tracking crop growth and health', link: 'https://en.wikipedia.org/wiki/Plant_monitoring' }
+    ]
+  },
+  {
+    role: 'Food Process Engineer',
+    basic: [
+      { tech: 'Food Chemistry', note: 'Studying chemical processes in food production', link: 'https://en.wikipedia.org/wiki/Food_chemistry' },
+      { tech: 'Processing Techniques', note: 'Developing efficient food processing methods', link: 'https://en.wikipedia.org/wiki/Food_processing' }
+    ],
+    main: [
+      { tech: 'Packaging', note: 'Designing and optimizing food packaging', link: 'https://en.wikipedia.org/wiki/Food_packaging' },
+      { tech: 'Preservation', note: 'Extending the shelf life of food products', link: 'https://en.wikipedia.org/wiki/Food_preservation' }
+    ]
+  },
+  {
+    role: 'Livestock Production Specialist',
+    basic: [
+      { tech: 'Animal Husbandry', note: 'Care and breeding of livestock animals', link: 'https://en.wikipedia.org/wiki/Animal_husbandry' },
+      { tech: 'Veterinary Science', note: 'Medical care for farm animals', link: 'https://en.wikipedia.org/wiki/Veterinary_medicine' }
+    ],
+    main: [
+      { tech: 'Animal Nutrition', note: 'Designing balanced diets for livestock', link: 'https://en.wikipedia.org/wiki/Animal_nutrition' },
+      { tech: 'Livestock Breeding', note: 'Improving livestock through selective breeding', link: 'https://en.wikipedia.org/wiki/Livestock_breeding' }
+    ]
+  },
+{
+    role: 'Agricultural Data Analyst',
+    basic: [
+      { tech: 'Data Analysis', note: 'Analyzing agricultural data for insights and trends', link: 'https://en.wikipedia.org/wiki/Data_analysis' },
+      { tech: 'GIS Systems', note: 'Using Geographic Information Systems for mapping and analysis', link: 'https://en.wikipedia.org/wiki/Geographic_information_system' }
+    ],
+    main: [
+      { tech: 'Yield Prediction', note: 'Forecasting crop yields using statistical models', link: 'https://en.wikipedia.org/wiki/Crop_yield' },
+      { tech: 'Climate Data Analysis', note: 'Studying weather patterns for agricultural planning', link: 'https://en.wikipedia.org/wiki/Climate_data' }
+    ]
+  },
+  {
+    role: 'Agricultural Educator',
+    basic: [
+      { tech: 'Teaching Methods', note: 'Effective techniques for educating agricultural communities', link: 'https://en.wikipedia.org/wiki/Teaching_method' },
+      { tech: 'Curriculum Development', note: 'Designing educational programs for agriculture', link: 'https://en.wikipedia.org/wiki/Curriculum_development' }
+    ],
+    main: [
+      { tech: 'Farmer Training', note: 'Providing technical knowledge to farmers', link: 'https://en.wikipedia.org/wiki/Agricultural_extension' },
+      { tech: 'Workshops', note: 'Organizing hands-on training sessions', link: 'https://en.wikipedia.org/wiki/Workshop_(seminar)' }
+    ]
+  },
+  {
+    role: 'Agroforestry Specialist',
+    basic: [
+      { tech: 'Forestry Science', note: 'Study of forest ecosystems and their management', link: 'https://en.wikipedia.org/wiki/Forestry' },
+      { tech: 'Agroforestry Systems', note: 'Combining agriculture and forestry for sustainable land use', link: 'https://en.wikipedia.org/wiki/Agroforestry' }
+    ],
+    main: [
+      { tech: 'Carbon Sequestration', note: 'Capturing carbon in agroforestry practices', link: 'https://en.wikipedia.org/wiki/Carbon_sequestration' },
+      { tech: 'Biodiversity Management', note: 'Enhancing biodiversity in agricultural landscapes', link: 'https://en.wikipedia.org/wiki/Biodiversity' }
+    ]
+  },
+  {
+    role: 'Urban Agriculture Specialist',
+    basic: [
+      { tech: 'Urban Farming', note: 'Growing food in urban environments', link: 'https://en.wikipedia.org/wiki/Urban_agriculture' },
+      { tech: 'Vertical Farming', note: 'Using vertical spaces for crop production', link: 'https://en.wikipedia.org/wiki/Vertical_farming' }
+    ],
+    main: [
+      { tech: 'Hydroponics', note: 'Growing plants without soil using nutrient solutions', link: 'https://en.wikipedia.org/wiki/Hydroponics' },
+      { tech: 'Community Gardens', note: 'Collaborative gardening in urban areas', link: 'https://en.wikipedia.org/wiki/Community_gardening' }
+    ]
+  },
+  {
+    role: 'Agricultural AI Specialist',
+    basic: [
+      { tech: 'Machine Learning', note: 'Applying AI techniques to agricultural problems', link: 'https://en.wikipedia.org/wiki/Machine_learning' },
+      { tech: 'Remote Sensing', note: 'Using satellite data to monitor crops and land', link: 'https://en.wikipedia.org/wiki/Remote_sensing' }
+    ],
+    main: [
+      { tech: 'Pest Detection', note: 'Identifying pests using AI-driven solutions', link: 'https://en.wikipedia.org/wiki/Pest_control' },
+      { tech: 'Crop Monitoring', note: 'Automating crop health monitoring with AI', link: 'https://en.wikipedia.org/wiki/Crop_monitoring' }
+    ]
+  },
+  {
+    role: 'Organic Farming Specialist',
+    basic: [
+      { tech: 'Soil Health', note: 'Maintaining soil fertility through natural methods', link: 'https://en.wikipedia.org/wiki/Soil_health' },
+      { tech: 'Pesticide Alternatives', note: 'Using natural pest control strategies', link: 'https://en.wikipedia.org/wiki/Biopesticide' }
+    ],
+    main: [
+      { tech: 'Organic Certification', note: 'Ensuring compliance with organic farming standards', link: 'https://en.wikipedia.org/wiki/Organic_certification' },
+      { tech: 'Market Development', note: 'Promoting organic produce in local and global markets', link: 'https://en.wikipedia.org/wiki/Organic_market' }
+    ]
+  },
+  {
+    role: 'Plant Pathologist',
+    basic: [
+      { tech: 'Disease Diagnosis', note: 'Identifying diseases in crops', link: 'https://en.wikipedia.org/wiki/Plant_pathology' },
+      { tech: 'Fungal Pathogens', note: 'Studying fungi that affect plants', link: 'https://en.wikipedia.org/wiki/Plant_fungal_diseases' }
+    ],
+    main: [
+      { tech: 'Disease Resistance', note: 'Developing resistant crop varieties', link: 'https://en.wikipedia.org/wiki/Disease_resistance_in_crops' },
+      { tech: 'Epidemiology', note: 'Studying the spread of plant diseases', link: 'https://en.wikipedia.org/wiki/Plant_disease_epidemiology' }
+    ]
+  },
+  {
+    role: 'Precision Irrigation Specialist',
+    basic: [
+      { tech: 'Sensor Networks', note: 'Using sensors to monitor soil and crop conditions', link: 'https://en.wikipedia.org/wiki/Wireless_sensor_network' },
+      { tech: 'Automation', note: 'Automated control of irrigation systems', link: 'https://en.wikipedia.org/wiki/Irrigation_automation' }
+    ],
+    main: [
+      { tech: 'Smart Irrigation', note: 'Optimizing water use with advanced technologies', link: 'https://en.wikipedia.org/wiki/Smart_irrigation' },
+      { tech: 'Water Efficiency', note: 'Improving water use efficiency in agriculture', link: 'https://en.wikipedia.org/wiki/Water_use_efficiency' }
+    ]
+  },
+  {
+    role: 'Agricultural Policy Consultant',
+    basic: [
+      { tech: 'Policy Development', note: 'Creating policies for sustainable agriculture', link: 'https://en.wikipedia.org/wiki/Agricultural_policy' },
+      { tech: 'Stakeholder Engagement', note: 'Collaborating with various stakeholders in agriculture', link: 'https://en.wikipedia.org/wiki/Stakeholder_engagement' }
+    ],
+    main: [
+      { tech: 'Legislation Analysis', note: 'Evaluating laws affecting the agricultural sector', link: 'https://en.wikipedia.org/wiki/Agricultural_legislation' },
+      { tech: 'Subsidy Programs', note: 'Designing and analyzing agricultural subsidies', link: 'https://en.wikipedia.org/wiki/Agricultural_subsidy' }
+    ]
+  },
+  {
+    role: 'Agro-Environmental Specialist',
+    basic: [
+      { tech: 'Environmental Science', note: 'Studying the impact of farming on ecosystems', link: 'https://en.wikipedia.org/wiki/Environmental_science' },
+      { tech: 'Sustainable Practices', note: 'Implementing eco-friendly farming techniques', link: 'https://en.wikipedia.org/wiki/Sustainable_agriculture' }
+    ],
+    main: [
+      { tech: 'Carbon Farming', note: 'Practices to reduce carbon footprint in agriculture', link: 'https://en.wikipedia.org/wiki/Carbon_farming' },
+      { tech: 'Pollution Control', note: 'Reducing environmental pollution from farming activities', link: 'https://en.wikipedia.org/wiki/Agricultural_pollution' }
+    ]
+  },
+  {
+    role: 'Agri-Tech Innovator',
+    basic: [
+      { tech: 'Startup Development', note: 'Launching innovative agricultural technology businesses', link: 'https://en.wikipedia.org/wiki/Startup_company' },
+      { tech: 'Tech Prototyping', note: 'Creating prototypes for agricultural innovations', link: 'https://en.wikipedia.org/wiki/Prototype' }
+    ],
+    main: [
+      { tech: 'Agri Drones', note: 'Developing drones for crop monitoring and spraying', link: 'https://en.wikipedia.org/wiki/Agricultural_drone' },
+      { tech: 'IoT in Agriculture', note: 'Designing smart farming solutions using IoT', link: 'https://en.wikipedia.org/wiki/Internet_of_things' }
+    ]
+  },
+  {
+    role: 'Plant Nutrition Specialist',
+    basic: [
+      { tech: 'Soil Nutrients', note: 'Understanding the role of nutrients in plant growth', link: 'https://en.wikipedia.org/wiki/Plant_nutrition' },
+      { tech: 'Fertilizer Application', note: 'Optimizing fertilizer use for crop yield', link: 'https://en.wikipedia.org/wiki/Fertilizer' }
+    ],
+    main: [
+      { tech: 'Micronutrients', note: 'Studying the impact of trace elements on plants', link: 'https://en.wikipedia.org/wiki/Micronutrient' },
+      { tech: 'Nutrient Management', note: 'Developing plans for balanced nutrient supply', link: 'https://en.wikipedia.org/wiki/Nutrient_management' }
+    ]
+  },
+  {
+    role: 'Agricultural Innovation Specialist',
+    basic: [
+      { tech: 'Technology Transfer', note: 'Introducing new farming technologies to communities', link: 'https://en.wikipedia.org/wiki/Technology_transfer' },
+      { tech: 'Innovation Adoption', note: 'Encouraging farmers to adopt innovative practices', link: 'https://en.wikipedia.org/wiki/Innovation' }
+    ],
+    main: [
+      { tech: 'Digital Farming', note: 'Implementing digital tools in agriculture', link: 'https://en.wikipedia.org/wiki/Digital_agriculture' },
+      { tech: 'Blockchain in Agri', note: 'Using blockchain for supply chain transparency', link: 'https://en.wikipedia.org/wiki/Blockchain' }
+    ]
+  },
+  {
+    role: 'Aquaponics Engineer',
+    basic: [
+      { tech: 'Aquaponics Basics', note: 'Combining aquaculture with hydroponics', link: 'https://en.wikipedia.org/wiki/Aquaponics' },
+      { tech: 'Water Quality', note: 'Maintaining optimal water conditions', link: 'https://en.wikipedia.org/wiki/Water_quality' }
+    ],
+    main: [
+      { tech: 'System Design', note: 'Creating integrated aquaponics systems', link: 'https://en.wikipedia.org/wiki/Systems_design' },
+      { tech: 'Fish and Crop Synergy', note: 'Balancing fish and plant needs in a system', link: 'https://en.wikipedia.org/wiki/Aquaponics#How_it_works' }
+    ]
+  },
+  {
+    role: 'Seed Technology Specialist',
+    basic: [
+      { tech: 'Seed Breeding', note: 'Developing high-yield and disease-resistant seeds', link: 'https://en.wikipedia.org/wiki/Plant_breeding' },
+      { tech: 'Seed Testing', note: 'Ensuring quality and viability of seeds', link: 'https://en.wikipedia.org/wiki/Seed_testing' }
+    ],
+    main: [
+      { tech: 'Hybrid Seeds', note: 'Producing seeds for improved crop performance', link: 'https://en.wikipedia.org/wiki/Hybrid_seed' },
+      { tech: 'Seed Preservation', note: 'Maintaining seed banks for future use', link: 'https://en.wikipedia.org/wiki/Seed_bank' }
+    ]
+  },
+  {
+    role: 'Post-Harvest Specialist',
+    basic: [
+      { tech: 'Storage Techniques', note: 'Preserving crop quality after harvest', link: 'https://en.wikipedia.org/wiki/Post-harvest_losses' },
+      { tech: 'Supply Chain Logistics', note: 'Optimizing transportation and storage of produce', link: 'https://en.wikipedia.org/wiki/Supply_chain' }
+    ],
+    main: [
+      { tech: 'Cold Storage Systems', note: 'Using refrigeration to extend shelf life', link: 'https://en.wikipedia.org/wiki/Cold_chain' },
+      { tech: 'Packaging Innovations', note: 'Developing eco-friendly and efficient packaging', link: 'https://en.wikipedia.org/wiki/Packaging_and_labeling' }
+    ]
+  },
+  {
+    role: 'Agroecologist',
+    basic: [
+      { tech: 'Ecosystem Services', note: 'Understanding the role of ecosystems in agriculture', link: 'https://en.wikipedia.org/wiki/Ecosystem_services' },
+      { tech: 'Agroecology Principles', note: 'Applying ecological principles to farming', link: 'https://en.wikipedia.org/wiki/Agroecology' }
+    ],
+    main: [
+      { tech: 'Natural Pest Control', note: 'Using biodiversity to manage pests', link: 'https://en.wikipedia.org/wiki/Biological_pest_control' },
+      { tech: 'Soil Restoration', note: 'Recovering degraded soil ecosystems', link: 'https://en.wikipedia.org/wiki/Soil_conservation' }
+    ]
+  },
+  {
+    role: 'Bioenergy Specialist',
+    basic: [
+      { tech: 'Biofuel Production', note: 'Producing energy from organic materials', link: 'https://en.wikipedia.org/wiki/Biofuel' },
+      { tech: 'Waste-to-Energy', note: 'Converting agricultural waste into energy', link: 'https://en.wikipedia.org/wiki/Waste-to-energy' }
+    ],
+    main: [
+      { tech: 'Biogas Plants', note: 'Designing systems for methane production', link: 'https://en.wikipedia.org/wiki/Biogas' },
+      { tech: 'Bioenergy Crops', note: 'Growing crops specifically for energy use', link: 'https://en.wikipedia.org/wiki/Energy_crop' }
+    ]
+  },
+  {
+    role: 'Agro-Industrial Specialist',
+    basic: [
+      { tech: 'Processing Techniques', note: 'Turning raw materials into finished products', link: 'https://en.wikipedia.org/wiki/Food_processing' },
+      { tech: 'Industrial Equipment', note: 'Operating machinery for agro-industrial applications', link: 'https://en.wikipedia.org/wiki/Industrial_machinery' }
+    ],
+    main: [
+      { tech: 'Value Addition', note: 'Increasing the market value of agricultural products', link: 'https://en.wikipedia.org/wiki/Value_added_product' },
+      { tech: 'Industrial Symbiosis', note: 'Integrating industries to optimize resource use', link: 'https://en.wikipedia.org/wiki/Industrial_symbiosis' }
+    ]
+  },
+  {
+    role: 'Crop Modeling Specialist',
+    basic: [
+      { tech: 'Simulation Models', note: 'Using models to predict crop growth and yield', link: 'https://en.wikipedia.org/wiki/Crop_simulation_model' },
+      { tech: 'Weather Data Analysis', note: 'Incorporating climate data into crop models', link: 'https://en.wikipedia.org/wiki/Climate_data' }
+    ],
+    main: [
+      { tech: 'Yield Forecasting', note: 'Predicting agricultural outputs using models', link: 'https://en.wikipedia.org/wiki/Agricultural_forecasting' },
+      { tech: 'Decision Support Tools', note: 'Providing actionable insights for farming', link: 'https://en.wikipedia.org/wiki/Decision_support_system' }
+    ]
+  }
+  // Similar structure for other roles
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Agricultural Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

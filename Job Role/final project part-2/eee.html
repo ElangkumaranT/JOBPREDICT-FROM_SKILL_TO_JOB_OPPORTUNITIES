@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">EEE Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+   const rolesData = [
+  { 
+    role: 'Electrical Engineer', 
+    basic: [
+      { tech: 'Circuit Analysis', note: 'Analysis of electrical circuits', link: 'https://www.electrical4u.com/circuit-theory/' },
+      { tech: 'Electrical Machines', note: 'Machines used for electrical applications', link: 'https://www.electrical4u.com/electrical-machines/' }
+    ], 
+    main: [
+      { tech: 'Power Systems', note: 'Generation, transmission, and distribution of electrical power', link: 'https://en.wikipedia.org/wiki/Power_system' },
+      { tech: 'Switchgear', note: 'Devices for controlling and protecting electrical circuits', link: 'https://www.electrical4u.com/switchgear/' }
+    ] 
+  },
+  { 
+    role: 'Power Systems Engineer', 
+    basic: [
+      { tech: 'Power Generation', note: 'Methods of generating electrical power', link: 'https://en.wikipedia.org/wiki/Power_generation' },
+      { tech: 'Distribution', note: 'Transmission of electrical power to consumers', link: 'https://en.wikipedia.org/wiki/Electrical_power_distribution' }
+    ], 
+    main: [
+      { tech: 'Load Flow Analysis', note: 'Study of power flow in electrical systems', link: 'https://www.electrical4u.com/load-flow-analysis/' },
+      { tech: 'SCADA', note: 'System for controlling industrial processes', link: 'https://en.wikipedia.org/wiki/SCADA' }
+    ] 
+  },
+  { 
+    role: 'Control Systems Engineer', 
+    basic: [
+      { tech: 'Control Theory', note: 'Mathematical approach to controlling dynamic systems', link: 'https://en.wikipedia.org/wiki/Control_theory' },
+      { tech: 'Modeling', note: 'Representation of physical systems for analysis', link: 'https://www.sciencedirect.com/topics/engineering/system-modeling' }
+    ], 
+    main: [
+      { tech: 'PID Controllers', note: 'Proportional, Integral, Derivative control mechanisms', link: 'https://en.wikipedia.org/wiki/PID_controller' },
+      { tech: 'MATLAB', note: 'Software for numerical computing and visualization', link: 'https://www.mathworks.com/products/matlab.html' }
+    ] 
+  },
+  { 
+    role: 'Embedded Systems Engineer', 
+    basic: [
+      { tech: 'C', note: 'Programming language for system software', link: 'https://en.wikipedia.org/wiki/C_(programming_language)' },
+      { tech: 'Microcontrollers', note: 'Small computers on a single integrated circuit', link: 'https://en.wikipedia.org/wiki/Microcontroller' }
+    ], 
+    main: [
+      { tech: 'RTOS', note: 'Real-Time Operating System for embedded systems', link: 'https://en.wikipedia.org/wiki/Real-time_operating_system' },
+      { tech: 'IoT', note: 'Internet of Things, networking of physical devices', link: 'https://www.ibm.com/topics/internet-of-things' }
+    ] 
+  },
+  { 
+    role: 'Automation Engineer', 
+    basic: [
+      { tech: 'PLC Programming', note: 'Programming of Programmable Logic Controllers', link: 'https://en.wikipedia.org/wiki/Programmable_logic_controller' },
+      { tech: 'Sensors', note: 'Devices for detecting physical changes', link: 'https://en.wikipedia.org/wiki/Sensor' }
+    ], 
+    main: [
+      { tech: 'SCADA', note: 'Supervisory control and data acquisition systems', link: 'https://en.wikipedia.org/wiki/SCADA' },
+      { tech: 'HMI', note: 'Human-Machine Interface for system interaction', link: 'https://en.wikipedia.org/wiki/Human-machine_interface' }
+    ] 
+  },
+  { 
+    role: 'Energy Systems Engineer', 
+    basic: [
+      { tech: 'Energy Management', note: 'Optimization of energy usage', link: 'https://en.wikipedia.org/wiki/Energy_management' },
+      { tech: 'Renewables', note: 'Renewable energy sources like solar and wind', link: 'https://www.irena.org/' }
+    ], 
+    main: [
+      { tech: 'Solar Systems', note: 'Solar power generation systems', link: 'https://en.wikipedia.org/wiki/Solar_power' },
+      { tech: 'Wind Power', note: 'Power generation from wind energy', link: 'https://en.wikipedia.org/wiki/Wind_power' }
+    ] 
+  },
+  { 
+    role: 'Electrical Design Engineer', 
+    basic: [
+      { tech: 'CAD Tools', note: 'Computer-Aided Design tools for electrical designs', link: 'https://en.wikipedia.org/wiki/Computer-aided_design' },
+      { tech: 'Electrical Codes', note: 'Standard regulations for electrical design', link: 'https://en.wikipedia.org/wiki/Electrical_code' }
+    ], 
+    main: [
+      { tech: 'AutoCAD', note: 'Software for 2D and 3D design', link: 'https://www.autodesk.com/products/autocad/overview' },
+      { tech: 'ETAP', note: 'Engineering software for electrical power systems', link: 'https://etap.com/' }
+    ] 
+  },
+  { 
+    role: 'Instrumentation Engineer', 
+    basic: [
+      { tech: 'Sensors', note: 'Devices that detect changes in physical conditions', link: 'https://en.wikipedia.org/wiki/Sensor' },
+      { tech: 'Transducers', note: 'Devices that convert one form of energy to another', link: 'https://en.wikipedia.org/wiki/Transducer' }
+    ], 
+    main: [
+      { tech: 'Calibration', note: 'Adjustment of instrument readings to accurate values', link: 'https://en.wikipedia.org/wiki/Calibration' },
+      { tech: 'Data Acquisition', note: 'Process of collecting data from various sources', link: 'https://en.wikipedia.org/wiki/Data_acquisition' }
+    ] 
+  },
+  { 
+    role: 'Electric Vehicle Engineer', 
+    basic: [
+      { tech: 'Battery Systems', note: 'Energy storage systems for electric vehicles', link: 'https://en.wikipedia.org/wiki/Electric_vehicle_battery' },
+      { tech: 'Motors', note: 'Electric motors for vehicle propulsion', link: 'https://en.wikipedia.org/wiki/Electric_motor' }
+    ], 
+    main: [
+      { tech: 'BMS', note: 'Battery Management System for electric vehicles', link: 'https://en.wikipedia.org/wiki/Battery_management_system' },
+      { tech: 'CAN Communication', note: 'Controller Area Network for vehicle communication', link: 'https://en.wikipedia.org/wiki/Controller_area_network' }
+    ] 
+  },
+  { 
+    role: 'High Voltage Engineer', 
+    basic: [
+      { tech: 'Insulation', note: 'Materials used to prevent electrical flow', link: 'https://en.wikipedia.org/wiki/Insulator_(electricity)' },
+      { tech: 'Switchgear', note: 'Devices for protecting and controlling electrical circuits', link: 'https://en.wikipedia.org/wiki/Switchgear' }
+    ], 
+    main: [
+      { tech: 'HV Testing', note: 'Testing high voltage systems for safety and performance', link: 'https://www.highvolt.de/en/home.html' },
+      { tech: 'Breakdown Analysis', note: 'Analysis of electrical breakdowns in high voltage systems', link: 'https://en.wikipedia.org/wiki/Partial_discharge' }
+    ] 
+  },
+  { 
+    role: 'Power Electronics Engineer', 
+    basic: [
+      { tech: 'Inverters', note: 'Devices for converting DC to AC', link: 'https://en.wikipedia.org/wiki/Inverter' },
+      { tech: 'Rectifiers', note: 'Devices for converting AC to DC', link: 'https://en.wikipedia.org/wiki/Rectifier' }
+    ], 
+    main: [
+      { tech: 'DC-DC Converters', note: 'Devices for converting DC voltage levels', link: 'https://en.wikipedia.org/wiki/Switched-mode_power_supply' },
+      { tech: 'IGBT', note: 'Insulated-Gate Bipolar Transistor used for power control', link: 'https://en.wikipedia.org/wiki/Insulated-gate_bipolar_transistor' }
+    ] 
+  },
+  { 
+    role: 'Maintenance Engineer', 
+    basic: [
+      { tech: 'Troubleshooting', note: 'Identifying and fixing issues in electrical systems', link: 'https://www.explainthatstuff.com/how-to-troubleshoot-electric-circuits.html' },
+      { tech: 'Safety', note: 'Ensuring safety in electrical systems', link: 'https://www.osha.gov/electrical' }
+    ], 
+    main: [
+      { tech: 'Preventive Maintenance', note: 'Scheduled maintenance to prevent system failures', link: 'https://en.wikipedia.org/wiki/Preventive_maintenance' },
+      { tech: 'Diagnostics', note: 'Tools and techniques for diagnosing system issues', link: 'https://www.diagnostic-tools.com/' }
+    ] 
+  },
+  { 
+    role: 'Signal Processing Engineer', 
+    basic: [
+      { tech: 'Fourier Transform', note: 'Mathematical transform for analyzing signals', link: 'https://en.wikipedia.org/wiki/Fourier_transform' },
+      { tech: 'Filtering', note: 'Process of removing noise from signals', link: 'https://en.wikipedia.org/wiki/Signal_processing' }
+    ], 
+    main: [
+      { tech: 'DSP Tools', note: 'Digital Signal Processing tools for signal manipulation', link: 'https://en.wikipedia.org/wiki/Digital_signal_processing' },
+      { tech: 'MATLAB', note: 'Software for numerical computing and visualization', link: 'https://www.mathworks.com/products/matlab.html' }
+    ] 
+  },
+  { 
+    role: 'Renewable Energy Engineer', 
+    basic: [
+      { tech: 'Solar Cells', note: 'Devices that convert sunlight into electricity', link: 'https://en.wikipedia.org/wiki/Solar_cell' },
+      { tech: 'Wind Turbines', note: 'Machines for converting wind energy into electricity', link: 'https://en.wikipedia.org/wiki/Wind_turbine' }
+    ], 
+    main: [
+      { tech: 'Energy Storage', note: 'Systems for storing renewable energy', link: 'https://en.wikipedia.org/wiki/Energy_storage' },
+      { tech: 'Grid Integration', note: 'Connecting renewable energy to the power grid', link: 'https://www.irena.org/' }
+    ] 
+  },
+  { 
+    role: 'IoT Systems Engineer', 
+    basic: [
+      { tech: 'Embedded Systems', note: 'Hardware and software systems for IoT devices', link: 'https://en.wikipedia.org/wiki/Embedded_system' },
+      { tech: 'Sensors', note: 'Devices for detecting physical changes', link: 'https://en.wikipedia.org/wiki/Sensor' }
+    ], 
+    main: [
+      { tech: 'IoT Protocols', note: 'Communication protocols for IoT systems', link: 'https://en.wikipedia.org/wiki/Internet_of_things' },
+      { tech: 'Edge Computing', note: 'Computing at the edge of networks for IoT', link: 'https://en.wikipedia.org/wiki/Edge_computing' }
+    ] 
+  },
+  { 
+    role: 'Robotics Engineer', 
+    basic: [
+      { tech: 'Embedded Systems', note: 'Hardware and software systems used in robotics', link: 'https://en.wikipedia.org/wiki/Embedded_system' },
+      { tech: 'Actuators', note: 'Devices that move parts of a robot', link: 'https://en.wikipedia.org/wiki/Actuator' }
+    ], 
+    main: [
+      { tech: 'ROS', note: 'Robot Operating System for controlling robots', link: 'https://www.ros.org/' },
+      { tech: 'Simulink', note: 'Model-based design tool for system simulation', link: 'https://www.mathworks.com/products/simulink.html' }
+    ] 
+  },
+  { 
+    role: 'Microelectronics Engineer', 
+    basic: [
+      { tech: 'Semiconductor Physics', note: 'Study of materials used in microelectronics', link: 'https://en.wikipedia.org/wiki/Semiconductor_physics' },
+      { tech: 'Integrated Circuits', note: 'Miniaturized electronic circuits in a single package', link: 'https://en.wikipedia.org/wiki/Integrated_circuit' }
+    ], 
+    main: [
+      { tech: 'Fabrication', note: 'Manufacturing of integrated circuits', link: 'https://en.wikipedia.org/wiki/Semiconductor_device_fabrication' },
+      { tech: 'CMOS Design', note: 'Design of CMOS technology for circuits', link: 'https://en.wikipedia.org/wiki/CMOS' }
+    ] 
+  },
+  { 
+    role: 'Biomedical Engineer', 
+    basic: [
+      { tech: 'Medical Electronics', note: 'Electronics used in medical devices', link: 'https://en.wikipedia.org/wiki/Medical_electronics' },
+      { tech: 'Sensors', note: 'Sensors for medical applications', link: 'https://en.wikipedia.org/wiki/Sensor' }
+    ], 
+    main: [
+      { tech: 'Patient Monitoring', note: 'Systems for monitoring patient vital signs', link: 'https://en.wikipedia.org/wiki/Patient_monitor' },
+      { tech: 'Medical Imaging', note: 'Techniques for creating visual representations of the body', link: 'https://en.wikipedia.org/wiki/Medical_imaging' }
+    ] 
+  },
+  { 
+    role: 'Electrical Safety Engineer', 
+    basic: [
+      { tech: 'Electrical Codes', note: 'Regulations for electrical safety', link: 'https://en.wikipedia.org/wiki/Electrical_code' },
+      { tech: 'Risk Assessment', note: 'Assessing electrical hazards and risks', link: 'https://en.wikipedia.org/wiki/Risk_assessment' }
+    ], 
+    main: [
+      { tech: 'Arc Flash Analysis', note: 'Analysis of electrical arc flash hazards', link: 'https://en.wikipedia.org/wiki/Arc_flash' },
+      { tech: 'Safety Standards', note: 'Safety regulations for electrical systems', link: 'https://www.osha.gov/' }
+    ] 
+  },
+  { 
+    role: 'Research Scientist', 
+    basic: [
+      { tech: 'Scientific Methods', note: 'Approaches to scientific investigations', link: 'https://en.wikipedia.org/wiki/Scientific_method' },
+      { tech: 'Data Analysis', note: 'Techniques for analyzing scientific data', link: 'https://en.wikipedia.org/wiki/Data_analysis' }
+    ], 
+    main: [
+      { tech: 'Simulation', note: 'Creating models to simulate real-world systems', link: 'https://en.wikipedia.org/wiki/Computer_simulation' },
+      { tech: 'Publication', note: 'Publishing research in scientific journals', link: 'https://en.wikipedia.org/wiki/Scientific_journal' }
+    ] 
+  },
+  { 
+    role: 'Telecommunication Engineer', 
+    basic: [
+      { tech: 'Signal Processing', note: 'Manipulating and analyzing signals', link: 'https://en.wikipedia.org/wiki/Signal_processing' },
+      { tech: 'Wireless Communication', note: 'Transmission of data without wires', link: 'https://en.wikipedia.org/wiki/Wireless_communication' }
+    ], 
+    main: [
+      { tech: 'Optical Fiber', note: 'Use of light for data transmission', link: 'https://en.wikipedia.org/wiki/Optical_fiber' },
+      { tech: '5G Networks', note: 'Fifth-generation mobile network technology', link: 'https://en.wikipedia.org/wiki/5G' }
+    ] 
+  },
+ { 
+    role: 'Electrical Project Engineer', 
+    basic: [
+      { tech: 'Project Management', note: 'Planning and managing electrical engineering projects', link: 'https://en.wikipedia.org/wiki/Project_management' },
+      { tech: 'Electrical Drafting', note: 'Creating detailed electrical schematics and layouts', link: 'https://en.wikipedia.org/wiki/Electrical_drawing' }
+    ], 
+    main: [
+      { tech: 'Cost Estimation', note: 'Estimating costs for electrical systems installation', link: 'https://en.wikipedia.org/wiki/Cost_estimation' },
+      { tech: 'Site Supervision', note: 'Overseeing electrical installations on-site', link: 'https://www.projectmanagement.com/deliverables/70204/Oversee-Site-Activities' }
+    ] 
+  },
+  { 
+    role: 'Lighting Design Engineer', 
+    basic: [
+      { tech: 'Lighting Technologies', note: 'Different types of lighting used in design', link: 'https://en.wikipedia.org/wiki/Lighting' },
+      { tech: 'CAD Design', note: 'Using CAD tools for lighting design', link: 'https://en.wikipedia.org/wiki/Computer-aided_design' }
+    ], 
+    main: [
+      { tech: 'Light Distribution', note: 'Optimizing the spread of light in a space', link: 'https://en.wikipedia.org/wiki/Lighting_design' },
+      { tech: 'Energy Efficiency', note: 'Ensuring energy-saving lighting designs', link: 'https://www.energy.gov/eere/slsc/energy-efficiency-lighting' }
+    ] 
+  },
+  { 
+    role: 'Electrical Maintenance Manager', 
+    basic: [
+      { tech: 'Preventive Maintenance', note: 'Scheduled maintenance to prevent breakdowns', link: 'https://en.wikipedia.org/wiki/Preventive_maintenance' },
+      { tech: 'Maintenance Scheduling', note: 'Organizing and planning electrical maintenance tasks', link: 'https://www.maintenancecare.com/maintenance-scheduling' }
+    ], 
+    main: [
+      { tech: 'Troubleshooting', note: 'Diagnosing and resolving electrical issues', link: 'https://www.electrical-engineering-portal.com/diagnostic-troubleshooting-electrical-systems' },
+      { tech: 'Team Leadership', note: 'Leading maintenance teams in electrical systems management', link: 'https://en.wikipedia.org/wiki/Team_leadership' }
+    ] 
+  },
+  { 
+    role: 'Power Distribution Engineer', 
+    basic: [
+      { tech: 'Power Grids', note: 'Design and management of power distribution grids', link: 'https://en.wikipedia.org/wiki/Power_grid' },
+      { tech: 'Load Management', note: 'Managing the load distribution across power systems', link: 'https://en.wikipedia.org/wiki/Load_management' }
+    ], 
+    main: [
+      { tech: 'Substation Design', note: 'Design of electrical substations for power distribution', link: 'https://en.wikipedia.org/wiki/Electrical_substation' },
+      { tech: 'Protection Systems', note: 'Systems to protect the grid from faults and failures', link: 'https://en.wikipedia.org/wiki/Power_system_protection' }
+    ] 
+  },
+  { 
+    role: 'Electrical Reliability Engineer', 
+    basic: [
+      { tech: 'Reliability Engineering', note: 'Ensuring electrical systems perform reliably over time', link: 'https://en.wikipedia.org/wiki/Reliability_engineering' },
+      { tech: 'Failure Mode Analysis', note: 'Identifying and analyzing potential failures in systems', link: 'https://en.wikipedia.org/wiki/Fault_tree_analysis' }
+    ], 
+    main: [
+      { tech: 'Root Cause Analysis', note: 'Investigating causes of electrical system failures', link: 'https://en.wikipedia.org/wiki/Root_cause_analysis' },
+      { tech: 'Predictive Maintenance', note: 'Using data to predict failures and schedule maintenance', link: 'https://en.wikipedia.org/wiki/Predictive_maintenance' }
+    ] 
+  },
+  { 
+    role: 'Electrical Testing Engineer', 
+    basic: [
+      { tech: 'Test Equipment', note: 'Using tools to test electrical systems', link: 'https://en.wikipedia.org/wiki/Electrical_testing' },
+      { tech: 'Test Procedures', note: 'Standardized methods for testing electrical components', link: 'https://www.nist.gov/pml/atomic-physics/electrical-and-electronic-standards' }
+    ], 
+    main: [
+      { tech: 'High Voltage Testing', note: 'Testing electrical equipment for high voltage applications', link: 'https://en.wikipedia.org/wiki/High_voltage_testing' },
+      { tech: 'Insulation Resistance', note: 'Testing the insulation of electrical systems for safety', link: 'https://en.wikipedia.org/wiki/Insulation_resistance' }
+    ] 
+  },
+  { 
+    role: 'Energy Audit Engineer', 
+    basic: [
+      { tech: 'Energy Auditing', note: 'Evaluating energy use to identify inefficiencies', link: 'https://en.wikipedia.org/wiki/Energy_audit' },
+      { tech: 'Energy Conservation', note: 'Strategies for reducing energy consumption', link: 'https://www.energy.gov/eere/slsc/energy-conservation' }
+    ], 
+    main: [
+      { tech: 'Energy Modeling', note: 'Simulating energy consumption to optimize usage', link: 'https://en.wikipedia.org/wiki/Energy_modeling' },
+      { tech: 'Regulatory Compliance', note: 'Ensuring energy use meets regulatory standards', link: 'https://www.epa.gov/energy' }
+    ] 
+  },
+  { 
+    role: 'Smart Grid Engineer', 
+    basic: [
+      { tech: 'Grid Automation', note: 'Automating the operation of electrical grids', link: 'https://en.wikipedia.org/wiki/Smart_grid' },
+      { tech: 'Metering Systems', note: 'Implementing metering systems for energy usage', link: 'https://en.wikipedia.org/wiki/Smart_meter' }
+    ], 
+    main: [
+      { tech: 'Demand Response', note: 'Adjusting energy usage based on grid demand', link: 'https://en.wikipedia.org/wiki/Demand_response' },
+      { tech: 'Distributed Energy Resources', note: 'Integrating renewable energy and storage into the grid', link: 'https://en.wikipedia.org/wiki/Distributed_energy_resource' }
+    ] 
+  },
+  { 
+    role: 'Telecommunications Design Engineer', 
+    basic: [
+      { tech: 'Network Design', note: 'Designing telecommunication networks', link: 'https://en.wikipedia.org/wiki/Telecommunications_network_design' },
+      { tech: 'Signal Transmission', note: 'Transmission of data through wired or wireless mediums', link: 'https://en.wikipedia.org/wiki/Signal_transmission' }
+    ], 
+    main: [
+      { tech: 'Wired Networks', note: 'Designing wired networks like fiber optics and copper cabling', link: 'https://en.wikipedia.org/wiki/Optical_fiber' },
+      { tech: 'Wireless Networks', note: 'Designing wireless communication networks', link: 'https://en.wikipedia.org/wiki/Wireless_network' }
+    ] 
+  },
+  { 
+    role: 'Microcontroller Design Engineer', 
+    basic: [
+      { tech: 'Embedded Programming', note: 'Writing software for embedded systems', link: 'https://en.wikipedia.org/wiki/Embedded_system' },
+      { tech: 'Microcontroller Architectures', note: 'Understanding the structure of microcontrollers', link: 'https://en.wikipedia.org/wiki/Microcontroller' }
+    ], 
+    main: [
+      { tech: 'ARM Cortex', note: 'ARM architecture used in embedded systems', link: 'https://en.wikipedia.org/wiki/ARM_Cortex' },
+      { tech: 'Peripherals', note: 'Components connected to a microcontroller', link: 'https://en.wikipedia.org/wiki/Peripheral_device' }
+    ] 
+  }
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'EEE Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

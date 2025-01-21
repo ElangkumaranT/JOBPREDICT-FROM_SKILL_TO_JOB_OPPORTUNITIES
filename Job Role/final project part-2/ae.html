@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeronautical Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Aeronautical Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    
+
+const rolesData = [
+  { 
+    role: 'Aeronautical Engineer', 
+    basic: [
+      { tech: 'Aerodynamics', note: 'Study of the behavior of air and its interaction with solid objects like aircraft', link: 'https://en.wikipedia.org/wiki/Aerodynamics' },
+      { tech: 'Flight Mechanics', note: 'Study of the forces acting on an aircraft and its motion through air', link: 'https://en.wikipedia.org/wiki/Flight_mechanics' }
+    ], 
+    main: [
+      { tech: 'Aircraft Design', note: 'Designing the structure, aerodynamics, and systems of an aircraft', link: 'https://en.wikipedia.org/wiki/Aircraft_design' },
+      { tech: 'Structural Analysis', note: 'Analyzing the strength and durability of aircraft materials and components', link: 'https://en.wikipedia.org/wiki/Structural_analysis' }
+    ] 
+  },
+  { 
+    role: 'Propulsion Engineer', 
+    basic: [
+      { tech: 'Thermodynamics', note: 'Study of heat transfer and energy conversion', link: 'https://en.wikipedia.org/wiki/Thermodynamics' },
+      { tech: 'Fluid Mechanics', note: 'Study of the behavior of fluids in motion and at rest', link: 'https://en.wikipedia.org/wiki/Fluid_mechanics' }
+    ], 
+    main: [
+      { tech: 'Jet Engines', note: 'Design and maintenance of engines that propel aircraft', link: 'https://en.wikipedia.org/wiki/Jet_engine' },
+      { tech: 'Turbines', note: 'Rotating machinery that extracts energy from fluid flow', link: 'https://en.wikipedia.org/wiki/Turbine' }
+    ] 
+  },
+  { 
+    role: 'Flight Test Engineer', 
+    basic: [
+      { tech: 'Flight Operations', note: 'Managing the operations of aircraft during flight tests', link: 'https://en.wikipedia.org/wiki/Flight_operations' },
+      { tech: 'Instrumentation', note: 'Using devices to measure and record data during flight tests', link: 'https://en.wikipedia.org/wiki/Instrumentation' }
+    ], 
+    main: [
+      { tech: 'Test Planning', note: 'Designing test procedures for flight tests', link: 'https://en.wikipedia.org/wiki/Flight_testing' },
+      { tech: 'Flight Simulation', note: 'Using computer models to simulate flight conditions for testing', link: 'https://en.wikipedia.org/wiki/Flight_simulator' }
+    ] 
+  },
+  { 
+    role: 'Aerospace Systems Engineer', 
+    basic: [
+      { tech: 'Systems Engineering', note: 'Designing and integrating complex aerospace systems', link: 'https://en.wikipedia.org/wiki/Systems_engineering' },
+      { tech: 'Integration', note: 'Bringing together various components to form a working system', link: 'https://en.wikipedia.org/wiki/Systems_integration' }
+    ], 
+    main: [
+      { tech: 'Avionics', note: 'Electronic systems used in aircraft, spacecraft, and satellites', link: 'https://en.wikipedia.org/wiki/Avionics' },
+      { tech: 'Flight Control Systems', note: 'Systems that control the flight path of an aircraft', link: 'https://en.wikipedia.org/wiki/Flight_control_system' }
+    ] 
+  },
+  { 
+    role: 'Aircraft Maintenance Engineer', 
+    basic: [
+      { tech: 'Maintenance Procedures', note: 'Scheduled inspections and repairs of aircraft components', link: 'https://en.wikipedia.org/wiki/Aircraft_maintenance' },
+      { tech: 'Safety Standards', note: 'Guidelines to ensure safe operation and maintenance of aircraft', link: 'https://en.wikipedia.org/wiki/Aircraft_safety' }
+    ], 
+    main: [
+      { tech: 'Engine Repair', note: 'Repair and maintenance of aircraft engines', link: 'https://en.wikipedia.org/wiki/Engine_repair' },
+      { tech: 'Airframe Inspection', note: 'Inspecting the aircraft structure for wear and damage', link: 'https://en.wikipedia.org/wiki/Airframe' }
+    ] 
+  },
+  { 
+    role: 'Avionics Engineer', 
+    basic: [
+      { tech: 'Electronics', note: 'Study and application of electrical systems in aircraft', link: 'https://en.wikipedia.org/wiki/Electronics' },
+      { tech: 'Signal Processing', note: 'Processing of electrical signals in avionics systems', link: 'https://en.wikipedia.org/wiki/Signal_processing' }
+    ], 
+    main: [
+      { tech: 'Navigation Systems', note: 'Systems used for guiding and controlling aircraft', link: 'https://en.wikipedia.org/wiki/Aircraft_navigation_system' },
+      { tech: 'Radar', note: 'Systems used for detecting objects and measuring distances using radio waves', link: 'https://en.wikipedia.org/wiki/Radar' }
+    ] 
+  },
+  { 
+    role: 'Materials Engineer', 
+    basic: [
+      { tech: 'Material Science', note: 'Study of materials and their properties', link: 'https://en.wikipedia.org/wiki/Materials_science' },
+      { tech: 'Fatigue Analysis', note: 'Study of material failure due to repeated loading', link: 'https://en.wikipedia.org/wiki/Fatigue_(material)' }
+    ], 
+    main: [
+      { tech: 'Composites', note: 'Advanced materials made from two or more constituent materials', link: 'https://en.wikipedia.org/wiki/Composite_material' },
+      { tech: 'High-Temperature Alloys', note: 'Materials designed to perform at high temperatures', link: 'https://en.wikipedia.org/wiki/High-temperature_alloy' }
+    ] 
+  },
+  { 
+    role: 'Flight Simulation Engineer', 
+    basic: [
+      { tech: 'Simulation Software', note: 'Software used to simulate flight operations and conditions', link: 'https://en.wikipedia.org/wiki/Flight_simulator' },
+      { tech: 'Aerodynamics', note: 'Study of the forces acting on an aircraft in flight', link: 'https://en.wikipedia.org/wiki/Aerodynamics' }
+    ], 
+    main: [
+      { tech: 'Flight Simulators', note: 'Realistic simulation tools for pilot training', link: 'https://en.wikipedia.org/wiki/Flight_simulator' },
+      { tech: 'Pilot Training', note: 'Training pilots through simulation and other methods', link: 'https://en.wikipedia.org/wiki/Pilot_training' }
+    ] 
+  },
+  { 
+    role: 'Airworthiness Engineer', 
+    basic: [
+      { tech: 'Certification', note: 'Ensuring aircraft meet safety standards and regulations', link: 'https://en.wikipedia.org/wiki/Airworthiness' },
+      { tech: 'Aviation Standards', note: 'Set of guidelines and rules ensuring aviation safety', link: 'https://en.wikipedia.org/wiki/International_Civil_Aviation_Organization' }
+    ], 
+    main: [
+      { tech: 'Regulatory Compliance', note: 'Ensuring aircraft meet regulatory standards', link: 'https://en.wikipedia.org/wiki/Aviation_regulation' },
+      { tech: 'Aircraft Inspections', note: 'Regular inspections to verify compliance and safety', link: 'https://en.wikipedia.org/wiki/Aircraft_inspection' }
+    ] 
+  },
+  { 
+    role: 'Aircraft Design Engineer', 
+    basic: [
+      { tech: 'Mechanical Engineering', note: 'Application of physics and material science to design mechanical systems', link: 'https://en.wikipedia.org/wiki/Mechanical_engineering' },
+      { tech: 'CAD Software', note: 'Using computer-aided design tools to create aircraft blueprints', link: 'https://en.wikipedia.org/wiki/Computer-aided_design' }
+    ], 
+    main: [
+      { tech: 'Airframe Design', note: 'Design of the main structure of the aircraft', link: 'https://en.wikipedia.org/wiki/Airframe' },
+      { tech: 'Wing Structures', note: 'Design of the wing components and their integration', link: 'https://en.wikipedia.org/wiki/Wing_(aircraft)' }
+    ] 
+  },
+  { 
+    role: 'Control Systems Engineer', 
+    basic: [
+      { tech: 'Control Theory', note: 'Mathematical concepts used to model and control systems', link: 'https://en.wikipedia.org/wiki/Control_theory' },
+      { tech: 'Flight Dynamics', note: 'Study of forces and moments on aircraft in flight', link: 'https://en.wikipedia.org/wiki/Flight_dynamics' }
+    ], 
+    main: [
+      { tech: 'Autopilot Systems', note: 'Automatic control systems that guide aircraft without human intervention', link: 'https://en.wikipedia.org/wiki/Autopilot' },
+      { tech: 'Stability Analysis', note: 'Study of the stability of aircraft under different conditions', link: 'https://en.wikipedia.org/wiki/Aircraft_stability' }
+    ] 
+  },
+  { 
+    role: 'Aerospace Materials Specialist', 
+    basic: [
+      { tech: 'Composite Materials', note: 'Materials made from two or more different materials', link: 'https://en.wikipedia.org/wiki/Composite_material' },
+      { tech: 'Failure Analysis', note: 'Investigation of material failure in aerospace components', link: 'https://en.wikipedia.org/wiki/Failure_analysis' }
+    ], 
+    main: [
+      { tech: 'Stress Testing', note: 'Test to evaluate material strength under stress', link: 'https://en.wikipedia.org/wiki/Stress_testing' },
+      { tech: 'Lightweight Structures', note: 'Design of materials and structures that are strong yet light', link: 'https://en.wikipedia.org/wiki/Lightweight_materials' }
+    ] 
+  },
+  { 
+    role: 'Navigation Systems Engineer', 
+    basic: [
+      { tech: 'Satellite Navigation', note: 'Positioning systems using satellite signals', link: 'https://en.wikipedia.org/wiki/Satellite_navigation' },
+      { tech: 'Geospatial Data', note: 'Data related to the geographic location of objects', link: 'https://en.wikipedia.org/wiki/Geospatial_data' }
+    ], 
+    main: [
+      { tech: 'GPS Systems', note: 'Global Positioning System used for determining location', link: 'https://en.wikipedia.org/wiki/Global_Positioning_System' },
+      { tech: 'Inertial Navigation', note: 'Navigation technique using motion sensors', link: 'https://en.wikipedia.org/wiki/Inertial_navigation_system' }
+    ] 
+  },
+  { 
+    role: 'Aircraft Performance Engineer', 
+    basic: [
+      { tech: 'Flight Performance', note: 'Study of how aircraft perform in different flight conditions', link: 'https://en.wikipedia.org/wiki/Flight_performance' },
+      { tech: 'Aircraft Stability', note: 'Study of the stability of aircraft under various conditions', link: 'https://en.wikipedia.org/wiki/Aircraft_stability' }
+    ], 
+    main: [
+      { tech: 'Lift and Drag Analysis', note: 'Understanding the forces acting on an aircraft during flight', link: 'https://en.wikipedia.org/wiki/Lift_(force)' },
+      { tech: 'Performance Metrics', note: 'Measuring aircraft performance parameters like fuel efficiency and speed', link: 'https://en.wikipedia.org/wiki/Specific_range' }
+    ] 
+  },
+{ 
+    role: 'Aerospace Manufacturing Engineer', 
+    basic: [
+      { tech: 'Manufacturing Processes', note: 'Techniques used in the production of aerospace components', link: 'https://en.wikipedia.org/wiki/Manufacturing_process' },
+      { tech: 'Automation', note: 'Use of technology to automate production processes', link: 'https://en.wikipedia.org/wiki/Automation' }
+    ], 
+    main: [
+      { tech: 'CNC Machining', note: 'Computer-controlled machine tools for precision manufacturing', link: 'https://en.wikipedia.org/wiki/CNC_machining' },
+      { tech: 'Additive Manufacturing', note: '3D printing techniques for creating complex aerospace parts', link: 'https://en.wikipedia.org/wiki/Additive_manufacturing' }
+    ] 
+  },
+  { 
+    role: 'Aircraft Certification Specialist', 
+    basic: [
+      { tech: 'Regulations', note: 'Aviation laws and standards to ensure safety and compliance', link: 'https://en.wikipedia.org/wiki/Aviation_regulation' },
+      { tech: 'Quality Assurance', note: 'Ensuring the quality of aerospace systems and components', link: 'https://en.wikipedia.org/wiki/Quality_assurance' }
+    ], 
+    main: [
+      { tech: 'Certification Process', note: 'The process of certifying that an aircraft meets safety standards', link: 'https://en.wikipedia.org/wiki/Airworthiness_certification' },
+      { tech: 'Inspection Protocols', note: 'Set of procedures for inspecting aircraft for compliance', link: 'https://en.wikipedia.org/wiki/Aircraft_inspection' }
+    ] 
+  },
+  { 
+    role: 'Aerospace Researcher', 
+    basic: [
+      { tech: 'Aerospace Theory', note: 'Theoretical study of aerospace systems and technologies', link: 'https://en.wikipedia.org/wiki/Aerospace_engineering' },
+      { tech: 'Experimental Design', note: 'Designing experiments to test aerospace concepts and technologies', link: 'https://en.wikipedia.org/wiki/Experimental_design' }
+    ], 
+    main: [
+      { tech: 'Prototyping', note: 'Building physical models to test new aerospace technologies', link: 'https://en.wikipedia.org/wiki/Prototyping' },
+      { tech: 'Wind Tunnel Testing', note: 'Testing aircraft models in a wind tunnel for aerodynamic performance', link: 'https://en.wikipedia.org/wiki/Wind_tunnel' }
+    ] 
+  },
+  { 
+    role: 'Spacecraft Engineer', 
+    basic: [
+      { tech: 'Space Systems', note: 'Designing systems for spacecraft operation', link: 'https://en.wikipedia.org/wiki/Spacecraft' },
+      { tech: 'Orbital Mechanics', note: 'Study of the motion of spacecraft in space', link: 'https://en.wikipedia.org/wiki/Orbital_mechanics' }
+    ], 
+    main: [
+      { tech: 'Spacecraft Design', note: 'Designing the structure and systems of spacecraft', link: 'https://en.wikipedia.org/wiki/Spacecraft_design' },
+      { tech: 'Launch Systems', note: 'Systems used to launch spacecraft into orbit', link: 'https://en.wikipedia.org/wiki/Space_launch_system' }
+    ] 
+  },
+  { 
+    role: 'Helicopter Engineer', 
+    basic: [
+      { tech: 'Rotorcraft Dynamics', note: 'Study of forces and moments on helicopters', link: 'https://en.wikipedia.org/wiki/Rotorcraft_dynamics' },
+      { tech: 'Flight Systems', note: 'Systems responsible for controlling helicopter flight', link: 'https://en.wikipedia.org/wiki/Helicopter' }
+    ], 
+    main: [
+      { tech: 'Helicopter Design', note: 'Designing the structure and flight systems of helicopters', link: 'https://en.wikipedia.org/wiki/Helicopter_design' },
+      { tech: 'Rotor Blade Testing', note: 'Testing the performance of helicopter rotor blades', link: 'https://en.wikipedia.org/wiki/Helicopter_rotor' }
+    ] 
+  },
+  { 
+    role: 'Unmanned Aerial Vehicle (UAV) Engineer', 
+    basic: [
+      { tech: 'Drone Technology', note: 'Technology behind the operation and control of drones', link: 'https://en.wikipedia.org/wiki/Unmanned_aerial_vehicle' },
+      { tech: 'Control Systems', note: 'Systems used to control UAVs during flight', link: 'https://en.wikipedia.org/wiki/Unmanned_aerial_vehicle#Control' }
+    ], 
+    main: [
+      { tech: 'Autonomous Drones', note: 'Drones capable of operating without human intervention', link: 'https://en.wikipedia.org/wiki/Autonomous_drone' },
+      { tech: 'Sensor Integration', note: 'Integration of sensors such as cameras and GPS for UAV functionality', link: 'https://en.wikipedia.org/wiki/Sensor_fusion' }
+    ] 
+  }
+];
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Aeronautical Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechnical Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Mechanical Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+   const rolesData = [
+{
+  role: 'Design Engineer',
+  basic: [
+    { tech: 'CAD', link: 'https://en.wikipedia.org/wiki/Computer-aided_design' },
+    { tech: 'SolidWorks', link: 'https://en.wikipedia.org/wiki/SolidWorks' }
+  ],
+  main: [
+    { tech: 'AutoCAD', link: 'https://en.wikipedia.org/wiki/AutoCAD' },
+    { tech: 'Finite Element Analysis', link: 'https://en.wikipedia.org/wiki/Finite_element_method' }
+  ]
+},
+{
+  role: 'Manufacturing Engineer',
+  basic: [
+    { tech: 'Production Planning', link: 'https://en.wikipedia.org/wiki/Production_planning' },
+    { tech: 'Lean Manufacturing', link: 'https://en.wikipedia.org/wiki/Lean_manufacturing' }
+  ],
+  main: [
+    { tech: 'Six Sigma', link: 'https://en.wikipedia.org/wiki/Six_Sigma' },
+    { tech: 'CNC Programming', link: 'https://en.wikipedia.org/wiki/CNC_programming' }
+  ]
+},
+{
+  role: 'Thermal Engineer',
+  basic: [
+    { tech: 'Heat Transfer', link: 'https://en.wikipedia.org/wiki/Heat_transfer' },
+    { tech: 'Thermodynamics', link: 'https://en.wikipedia.org/wiki/Thermodynamics' }
+  ],
+  main: [
+    { tech: 'CFD Analysis', link: 'https://en.wikipedia.org/wiki/Computational_fluid_dynamics' },
+    { tech: 'HVAC Systems', link: 'https://en.wikipedia.org/wiki/HVAC' }
+  ]
+},
+{
+  role: 'Automotive Engineer',
+  basic: [
+    { tech: 'Vehicle Dynamics', link: 'https://en.wikipedia.org/wiki/Vehicle_dynamics' },
+    { tech: 'Powertrains', link: 'https://en.wikipedia.org/wiki/Automobile_powertrain' }
+  ],
+  main: [
+    { tech: 'Electric Vehicles', link: 'https://en.wikipedia.org/wiki/Electric_car' },
+    { tech: 'Hybrid Systems', link: 'https://en.wikipedia.org/wiki/Hybrid_vehicle' }
+  ]
+},
+{
+  role: 'Aerospace Engineer',
+  basic: [
+    { tech: 'Aerodynamics', link: 'https://en.wikipedia.org/wiki/Aerodynamics' },
+    { tech: 'Propulsion', link: 'https://en.wikipedia.org/wiki/Jet_engine' }
+  ],
+  main: [
+    { tech: 'Structural Analysis', link: 'https://en.wikipedia.org/wiki/Structural_analysis' },
+    { tech: 'Flight Mechanics', link: 'https://en.wikipedia.org/wiki/Flight_mechanics' }
+  ]
+},
+{
+  role: 'Maintenance Engineer',
+  basic: [
+    { tech: 'Equipment Maintenance', link: 'https://en.wikipedia.org/wiki/Maintenance_engineering' },
+    { tech: 'Condition Monitoring', link: 'https://en.wikipedia.org/wiki/Condition_monitoring' }
+  ],
+  main: [
+    { tech: 'Predictive Maintenance', link: 'https://en.wikipedia.org/wiki/Predictive_maintenance' },
+    { tech: 'Troubleshooting', link: 'https://en.wikipedia.org/wiki/Troubleshooting' }
+  ]
+},
+{
+  role: 'Robotics Engineer',
+  basic: [
+    { tech: 'Kinematics', link: 'https://en.wikipedia.org/wiki/Kinematics' },
+    { tech: 'Dynamics', link: 'https://en.wikipedia.org/wiki/Dynamics' }
+  ],
+  main: [
+    { tech: 'Robot Programming', link: 'https://en.wikipedia.org/wiki/Robot_programming' },
+    { tech: 'Automation Systems', link: 'https://en.wikipedia.org/wiki/Automation' }
+  ]
+},
+{
+  role: 'Mechatronics Engineer',
+  basic: [
+    { tech: 'Sensors', link: 'https://en.wikipedia.org/wiki/Sensor' },
+    { tech: 'Actuators', link: 'https://en.wikipedia.org/wiki/Actuator' }
+  ],
+  main: [
+    { tech: 'PLC Programming', link: 'https://en.wikipedia.org/wiki/Programmable_logic_controller' },
+    { tech: 'Embedded Systems', link: 'https://en.wikipedia.org/wiki/Embedded_system' }
+  ]
+},
+{
+  role: 'Quality Control Engineer',
+  basic: [
+    { tech: 'Inspection', link: 'https://en.wikipedia.org/wiki/Inspection' },
+    { tech: 'Quality Standards', link: 'https://en.wikipedia.org/wiki/Quality_management' }
+  ],
+  main: [
+    { tech: 'ISO 9001', link: 'https://en.wikipedia.org/wiki/ISO_9001' },
+    { tech: 'Statistical Process Control', link: 'https://en.wikipedia.org/wiki/Statistical_process_control' }
+  ]
+},
+{
+  role: 'Structural Engineer',
+  basic: [
+    { tech: 'Statics', link: 'https://en.wikipedia.org/wiki/Statics' },
+    { tech: 'Strength of Materials', link: 'https://en.wikipedia.org/wiki/Strength_of_materials' }
+  ],
+  main: [
+    { tech: 'ANSYS', link: 'https://en.wikipedia.org/wiki/ANSYS' },
+    { tech: 'Structural Design', link: 'https://en.wikipedia.org/wiki/Structural_design' }
+  ]
+},
+{
+  role: 'Materials Engineer',
+  basic: [
+    { tech: 'Metallurgy', link: 'https://en.wikipedia.org/wiki/Metallurgy' },
+    { tech: 'Material Science', link: 'https://en.wikipedia.org/wiki/Materials_science' }
+  ],
+  main: [
+    { tech: 'Composite Materials', link: 'https://en.wikipedia.org/wiki/Composite_material' },
+    { tech: 'Failure Analysis', link: 'https://en.wikipedia.org/wiki/Failure_analysis' }
+  ]
+},
+{
+  role: 'Energy Engineer',
+  basic: [
+    { tech: 'Energy Efficiency', link: 'https://en.wikipedia.org/wiki/Energy_efficiency' },
+    { tech: 'Renewable Energy', link: 'https://en.wikipedia.org/wiki/Renewable_energy' }
+  ],
+  main: [
+    { tech: 'Solar Systems', link: 'https://en.wikipedia.org/wiki/Solar_power_system' },
+    { tech: 'Wind Turbines', link: 'https://en.wikipedia.org/wiki/Wind_turbine' }
+  ]
+},
+{
+  role: 'Production Engineer',
+  basic: [
+    { tech: 'Process Planning', link: 'https://en.wikipedia.org/wiki/Production_planning' },
+    { tech: 'Production Workflow', link: 'https://en.wikipedia.org/wiki/Manufacturing_execution_system' }
+  ],
+  main: [
+    { tech: 'Lean Manufacturing', link: 'https://en.wikipedia.org/wiki/Lean_manufacturing' },
+    { tech: 'Automation', link: 'https://en.wikipedia.org/wiki/Automation' }
+  ]
+},
+{
+  role: 'Project Manager',
+  basic: [
+    { tech: 'Project Planning', link: 'https://en.wikipedia.org/wiki/Project_management' },
+    { tech: 'Cost Estimation', link: 'https://en.wikipedia.org/wiki/Cost_estimation' }
+  ],
+  main: [
+    { tech: 'Primavera', link: 'https://en.wikipedia.org/wiki/Primavera_P6' },
+    { tech: 'MS Project', link: 'https://en.wikipedia.org/wiki/Microsoft_Project' }
+  ]
+},
+{
+  role: 'Piping Engineer',
+  basic: [
+    { tech: 'Fluid Mechanics', link: 'https://en.wikipedia.org/wiki/Fluid_mechanics' },
+    { tech: 'Piping Design', link: 'https://en.wikipedia.org/wiki/Piping_design' }
+  ],
+  main: [
+    { tech: 'Pipe Stress Analysis', link: 'https://en.wikipedia.org/wiki/Pipe_stress_analysis' },
+    { tech: 'Plant Layouts', link: 'https://en.wikipedia.org/wiki/Plant_layout' }
+  ]
+},
+{
+  role: 'Industrial Engineer',
+  basic: [
+    { tech: 'Operations Management', link: 'https://en.wikipedia.org/wiki/Operations_management' },
+    { tech: 'Process Optimization', link: 'https://en.wikipedia.org/wiki/Process_optimization' }
+  ],
+  main: [
+    { tech: 'Ergonomics', link: 'https://en.wikipedia.org/wiki/Ergonomics' },
+    { tech: 'Value Stream Mapping', link: 'https://en.wikipedia.org/wiki/Value_stream_mapping' }
+  ]
+},
+{
+  role: 'Hydraulics Engineer',
+  basic: [
+    { tech: 'Fluid Dynamics', link: 'https://en.wikipedia.org/wiki/Fluid_dynamics' },
+    { tech: 'Pump Systems', link: 'https://en.wikipedia.org/wiki/Pump' }
+  ],
+  main: [
+    { tech: 'Hydraulic Circuits', link: 'https://en.wikipedia.org/wiki/Hydraulic_circuit' },
+    { tech: 'System Design', link: 'https://en.wikipedia.org/wiki/System_design' }
+  ]
+},
+{
+  role: 'Welding Engineer',
+  basic: [
+    { tech: 'Welding Processes', link: 'https://en.wikipedia.org/wiki/Welding' },
+    { tech: 'Metallurgy', link: 'https://en.wikipedia.org/wiki/Metallurgy' }
+  ],
+  main: [
+    { tech: 'Weld Inspection', link: 'https://en.wikipedia.org/wiki/Weld_inspection' },
+    { tech: 'NDT Techniques', link: 'https://en.wikipedia.org/wiki/Non-destructive_testing' }
+  ]
+},
+{
+  role: 'Tooling Engineer',
+  basic: [
+    { tech: 'Tool Design', link: 'https://en.wikipedia.org/wiki/Tool_design' },
+    { tech: 'Jigs & Fixtures', link: 'https://en.wikipedia.org/wiki/Jig_and_fixture' }
+  ],
+  main: [
+    { tech: 'CNC Tooling', link: 'https://en.wikipedia.org/wiki/CNC_machine' },
+    { tech: 'Precision Machining', link: 'https://en.wikipedia.org/wiki/Precision_engineering' }
+  ]
+},
+{
+  role: 'HVAC Engineer',
+  basic: [
+    { tech: 'Thermodynamics', link: 'https://en.wikipedia.org/wiki/Thermodynamics' },
+    { tech: 'Fluid Mechanics', link: 'https://en.wikipedia.org/wiki/Fluid_mechanics' }
+  ],
+  main: [
+    { tech: 'HVAC Design', link: 'https://en.wikipedia.org/wiki/HVAC' },
+    { tech: 'Energy Optimization', link: 'https://en.wikipedia.org/wiki/Energy_efficiency' }
+  ]
+},
+{
+  role: 'Biomedical Engineer',
+  basic: [
+    { tech: 'Biomechanics', link: 'https://en.wikipedia.org/wiki/Biomechanics' },
+    { tech: 'Medical Devices', link: 'https://en.wikipedia.org/wiki/Medical_device' }
+  ],
+  main: [
+    { tech: 'Prosthetics Design', link: 'https://en.wikipedia.org/wiki/Prosthetics' },
+    { tech: 'Medical Imaging', link: 'https://en.wikipedia.org/wiki/Medical_imaging' }
+  ]
+},
+{
+  role: 'Marine Engineer',
+  basic: [
+    { tech: 'Ship Design', link: 'https://en.wikipedia.org/wiki/Ship_design' },
+    { tech: 'Marine Systems', link: 'https://en.wikipedia.org/wiki/Marine_engineering' }
+  ],
+  main: [
+    { tech: 'Propulsion Systems', link: 'https://en.wikipedia.org/wiki/Ship_propulsion' },
+    { tech: 'Offshore Engineering', link: 'https://en.wikipedia.org/wiki/Offshore_engineering' }
+  ]
+},
+{
+  role: 'Additive Manufacturing Engineer',
+  basic: [
+    { tech: '3D Modeling', link: 'https://en.wikipedia.org/wiki/3D_modeling' },
+    { tech: 'Material Properties', link: 'https://en.wikipedia.org/wiki/Material_science' }
+  ],
+  main: [
+    { tech: '3D Printing', link: 'https://en.wikipedia.org/wiki/3D_printing' },
+    { tech: 'Rapid Prototyping', link: 'https://en.wikipedia.org/wiki/Rapid_prototyping' }
+  ]
+}
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Mechanical Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

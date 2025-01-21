@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancing Job Platform</title>
+    <!-- For contact-page --> 
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css"  
+    integrity="sha384-NvKbDTEnL+A8F/AA5Tc5kmMLSJHUO868P+lDtTpJIeQdGYaUIuLr4lVGOEA1OcMy" crossorigin="anonymous">
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+   <!-- <link href="https://fonts.googleapis.com/css?family=Courgette|Open+Sans&display=swap" rel="stylesheet"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+   <link rel="stylesheet" href="galary.css">
+   <!--social-icon-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+    .services-section{
+        font-family: 'Raleway', sans-serif;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+        overflow: hidden;
+        font-weight: 300;
+        padding-top: 7%;
+      } 
+      .bodyi, ul, li, a {
+           margin: 0;
+           padding: 0;
+           list-style: none;
+           text-decoration: none;
+        }
+        
+        .bodyi {
+            font-family: 'Poppins', sans-serif;
+            background-color: white; /* Light background for better contrast */
+            height: 100vh;
+            font-weight: 300;
+           
+        }
+        .home-section{
+             padding-bottom: 10%;
+        }
+
+        .contain {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Navbar Styles */
+        .navbari {
+            background-color:  rgba(5, 42, 68, 255); /* White background */
+            color: white; /* Black text */
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-radius: 15px;
+            margin: 30px 20px;
+          
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: white; /* Black text for logo */
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 30px;
+            margin-right: 10px;
+            color: #ffdd59; /* Yellow for logo icon */
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            margin-left: 15%;
+        }
+
+        .nav-menu ul {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-menu ul li {
+            display: inline-block;
+        }
+
+        .nav-menu ul li a {
+            color: white; /* Black text for links */
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .contact-link {
+            margin-left: auto; /* Push the contact link to the far right */
+        }
+
+        .contact-link a {
+            background: white; /* Yellow background for Contact button */
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .contact-link {
+                margin-left: 0;
+            }
+        }
+
+        /* New Layout */
+        .whole {
+            display: flex; /* Using flexbox to create a two-column layout */
+            justify-content: space-between;
+            align-items: center;
+            width: fit-content; /* Ensuring it takes the full width */
+            height: 400px; /* Height for the section */
+            background-color: white; /* Background color of the box */
+            padding: 20px 20px;
+        }
+
+        /* Theory Section */
+        .theory-section {
+            flex: 1; /* Takes half the width of the container */
+            color: #000;
+            padding: 20px;
+        }
+        .h1{
+            flex: 1; /* Takes half the width of the container */
+            color: #000;
+            padding: 20px;
+            font-size: 25px;
+            line-height: 1.6;
+        
+            font-weight: 600;
+        }
+
+
+        /* Box Section */
+        .box-section {
+            width: 40%; /* Makes the box section half of the container width */
+            height: 400px; /* Making it a square box */
+            background-color: orange; /* Box background color */
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Allows for absolute positioning of the image */
+        }
+
+        /* Image inside the box */
+        .box-section img {
+            position: absolute; /* Position the image absolutely */
+            bottom: 0; /* Align the image to the bottom */
+            width: auto; /* Makes the image stretch to the width of the box */
+            height: 450px; /* Maintain aspect ratio of the image */
+            border-bottom-left-radius: 10px; /* Rounded corner for bottom-left */
+            border-bottom-right-radius: 10px; /* Rounded corner for bottom-right */
+            right: 0px;
+
+        }
+        .career{
+            font-weight: 600;
+            font-size: 60px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: orange;
+        }
+        .path{
+            font-weight: 600;
+            font-size: 60px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            color: black;
+        }
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: fixed; /* Fixed at the top of the page */
+    top: 7%; /* Adjust the distance from the top of the page */
+    left: 50%;
+    transform: translateX(-50%); /* Center align the container */
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    z-index: 9999; /* Ensure it appears above other content */
+    display: none; /* Initially hidden */
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.container p {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    margin: 20px 0;
+}
+
+.container span {
+    font-size: 12px;
+}
+
+.container a {
+    color: #333;
+    font-size: 13px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.container button {
+    background-color: rgb(26, 26, 236);
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.container button.hidden {
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.container form {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+    padding-top: 13%;
+
+}
+
+.container input {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 80%;
+    outline: none;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    transition: all 0.6s ease-in-out;
+}
+
+
+.sign-in {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+   
+}
+
+.container.active .sign-in {
+    transform: translateX(100%);
+}
+
+.sign-up {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container.active .sign-up {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: move 0.6s;
+}
+
+@keyframes move {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.social-icons {
+    margin: 20px 0;
+}
+
+.social-icons a {
+    border: 1px solid #ccc;
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+}
+
+.toggle-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.6s ease-in-out;
+    border-radius: 150px 0 0 100px;
+    z-index: 1000;
+}
+
+.container.active .toggle-container {
+    transform: translateX(-100%);
+    border-radius: 0 150px 100px 0;
+}
+
+.toggle {
+    background-color: rgba(5, 42, 68, 255);
+    height: 100%;
+    background: linear-gradient(to right,  rgba(5, 42, 68, 255),  rgba(4, 40, 67, 250));
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+}
+
+.container.active .toggle {
+    transform: translateX(50%);
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 30px;
+    text-align: center;
+    top: 0;
+    transform: translateX(0);
+    transition: all 0.6s ease-in-out;
+    box-sizing: border-box;
+}
+
+.toggle-left {
+    transform: translateX(-200%);
+}
+
+.container.active .toggle-left {
+    transform: translateX(0);
+}
+
+.toggle-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.active .toggle-right {
+    transform: translateX(200%);
+}
+
+/* Close Button Styles */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    color: white;
+    background-color: rgb(26, 26, 236);
+    transform: scale(1.1);
+  }
+
+
+
+.about-us-section {
+    background-color: white;
+    color: #333;
+    padding: 40px 20px; /* Internal padding for the section */
+    text-align: center;
+    padding-bottom: 13%;
+    border-radius: 15px;
+    margin: 30px 20px;
+   
+}
+
+.about-us h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+    font-weight: 600;
+    padding-bottom: 50px;
+}
+
+.about-us p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #6c757d;
+}
+
+.card-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    padding: 40px 20px 20px 20px;
+    text-align: center;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card .icon-container {
+    width: 60px;
+    height: 60px;
+   background-color:  rgba(5, 42, 68, 255);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -30px auto 15px auto;
+}
+
+.card .icon-container img {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+    background-color: transparent;
+}
+
+.card h2 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #6c757d;
+}
+
+.learn-more {
+    margin-top: 40px;
+}
+
+.learn-more button {
+    background-color: rgba(5, 42, 68, 255);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.learn-more button:hover {
+    background-color: #333;
+}
+.logo-icon img{
+    height: 50x;
+    width: 50px;
+}
+
+
+/*contact-page*/
+.full-contactpage{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins' sans-serif; 
+   
+}
+.contact-section{
+    position: relative;
+    min-height: 100vh;
+    padding: 50px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: url(bite1.jpg);
+    background-size: cover;
+    border-radius: 10px;
+}
+.contact-section .content-1{
+    max-width: 800px;
+    text-align: center;
+}
+.contact-section .content-1 h2{
+    font-size: 36px;
+    font-weight: 600;
+    color: #08ece1;
+}
+.contact-section .content-1 p{
+    font-weight: 500;
+    color: #fff;
+    
+
+}
+.contact-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+.contact-container .contactInfo{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.contact-container .contactInfo .contact-box{
+    position: relative;
+    padding: 20px 0;
+    display: flex;
+}
+.contact-container .contactInfo .contact-box .contact-icon{
+    min-width: 60px;
+    height: 60px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 30px;
+
+}
+
+.contact-container .contactInfo .contact-box .contact-text{
+    display: flex;
+    margin-left: 20px;
+    font-size: 16px;
+    color: #fff;
+    flex-direction: column;
+    font-weight: 500;
+}
+.contact-container .contactInfo .contact-box .contact-text h4{
+    font-weight: 600;
+    color: #00bcd4;
+}
+.contact-form{
+    width: 40%;
+    padding: 40px;
+    background: #fff;
+   
+}
+.contact-form h2{
+font-size: 30px;
+color: #333;
+font-weight: 500;
+}
+.contact-form .contact-inputbox{
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+.contact-form .contact-inputbox input,
+.contact-form .contact-inputbox textarea{
+    width: 100%;
+    padding: 5px 0;
+    font-size: 16px;
+    margin: 10px 0;
+    border: none;
+    border-bottom: 2px solid #333;
+    outline: none;
+    resize: none;
+}
+.contact-form .contact-inputbox span{
+    position: absolute;
+    left: 0;
+    padding: 5px 0;
+    font-size: 16px;
+    margin: 10px 0;
+    pointer-events: none;
+    transition: 0.5s;
+    color: #666;
+}
+.contact-form .contact-inputbox input:focus ~ span,
+.contact-form .contact-inputbox input:valid ~ span,
+.contact-form .contact-inputbox textarea:focus ~ span,
+.contact-form .contact-inputbox textarea:valid ~ span{
+    color: #e91e63;
+    font-size: 12px;
+    transform: translateY(-20px);
+}
+.contact-form .contact-inputbox input[type="submit"]{
+    width: 100px;
+    background: #00bcd4;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    
+}
+@media (max-width: 991px)
+{
+    .contact-section{
+        padding: 50px;
+    }
+
+    .contact-container{
+        flex-direction: column;
+    }
+
+    .contact-container .contactInfo{
+        margin-bottom: 40px;
+    }
+
+    .contact-container .contactInfo,
+    .contact-form{
+        width: 100%;
+    }
+}
+/*socialmeadia-icon*/
+.social-media {
+    display: flex;
+     /* Arrange items in a column */
+    align-items: center;    /* Center items horizontally */
+    gap: 10%;              /* Spacing between icons */
+    margin-top: 20px;
+    flex-direction: row;
+}
+
+.social-media a {
+    text-decoration: none;
+    font-size: 24px;        /* Adjust icon size */
+    width: 40px;            /* Circular dimensions */
+    height: 40px;
+    line-height: 40px;      /* Center the icon text vertically */
+    border-radius: 40%;     /* Circular background */
+    text-align: center;
+    color: white;
+    display: inline-block;
+    transition: transform 0.3s ease; /* Smooth scaling on hover */
+}
+
+.social-media a:hover {
+    transform: scale(1.1);  /* Slight zoom effect on hover */
+}
+
+/* Specific colors for each platform */
+.social-media .fa-facebook:hover {
+    background-color: #3b5998; /* Facebook blue */
+}
+
+.social-media .fa-twitter:hover {
+    background-color: #1da1f2; /* Twitter blue */
+}
+
+.social-media .fa-google:hover {
+    background-color: #ffffff; /* Google white */
+    color: #4285f4;            /* Google blue icon */
+    border: 1px solid #ddd;    /* Optional border for contrast */
+}
+
+.social-media .fa-youtube:hover {
+    background-color: #ff0000; /* YouTube red */
+}
+
+.social-media .fa-instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white; /* Instagram gradient */
+}
+.service-theory p{
+    font-weight: 500;
+    color: black;
+    text-align: center;
+    margin:10px 35px 0px 35px;
+}
+
+</style>
+</head>
+<body class="bodyi">
+    <section class="home-section" id="home">
+
+    <header class="navbari">
+        <div class="contain">
+            <div class="logo">
+                <span class="logo-icon"><img src="main-logo.png"></span>
+                <a href="#">JobPredictioN</a>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About US</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#Contact">Contact</a></li>
+                </ul>
+                <ul class="contact-link">
+                    <li><a href="#Sign-in" style="color:rgba(5, 42, 68, 255);" onclick="openPopup()">Sign in</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Section: Theory and Box -->
+    <section class="whole">
+        <!-- Theory Section -->
+        <div class="theory-section">
+            <h1 class="h1" style=" font-family: 'Poppins', sans-serif;"><span class="career">Career</span><span class="path"> Path Now </span><br><br><span class="answer">A career path is to the progression of jobs and
+                professional development an individual follows over time within a specific field or industry</span></h1>
+        </div>
+
+        <!-- Box Section (Square Box with Image) -->
+        <div class="box-section">
+            <!-- Image inside the box, aligned to the bottom -->
+            <img src="girl.png" alt="Image at the bottom of the box">
+        </div>
+    </section>
+           <!-- Keep the container hidden initially -->
+<div class="container" id="container" style="display: none;">
+    <div class="form-container sign-up">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+    <form>
+        <h1 style="color: black; font-weight: 600">Create Account</h1>
+    <div class="social-icons">
+    <a href="#" class="social-icon google"><i class="fab fa-google"></i></a>
+    <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-icon github"><i class="fab fa-github"></i></a>
+    <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+</div>
+        <span>or use your email for registration</span>
+        <input type="text" placeholder="Name">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button>Sign Up</button>
+    </form>
+    </div>
+    <div class="form-container sign-in">
+        <form>
+            <h1 style="color: black; font-weight: 600">Sign In</h1>
+            <div class="social-icons">
+                <a href="#" class="social-icon google"><i class="fab fa-google"></i></a>
+                <a href="#" class="social-icon facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon github"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <span>or use your email password</span>
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Password">
+            <a href="#">Forget Your Password?</a>
+            <button>Sign In</button>
+        </form>
+    </div>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1 style="color: white; font-weight: 600">Welcome Back!</h1>
+                <p>Enter your personal details to use all of site features</p>
+                <button class="hidden" id="login">Sign In</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1 style="color: white; font-weight: 600">Hello, Friend!</h1>
+                <p>Register with your personal details to use all of site features</p>
+                <button class="hidden" id="register" type="submit">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section id="about" class="about-us-section">
+    <div class="about-us">
+        <h1>About Us</h1>
+        <p>RolePredict is a powerful platform that bridges skills, learning, and job opportunities to drive career success.</p>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <div class="icon-container">
+                <img src="icon-1.png" alt="Mission Icon">
+            </div>
+            <h2>Mission</h2>
+            <p>Our mission is to predict job roles based on user skills, guiding individuals toward opportunities that match their potential.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon-container">
+                <img src="icon-1.png" alt="Values Icon">
+            </div>
+            <h2>Values</h2>
+            <p>We value continuous learning, offering tailored recommendations to enhance skills and achieve career goals.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon-container">
+                <img src="icon-1.png" alt="USP Icon">
+            </div>
+            <h2>Unique Selling Points</h2>
+            <p>Combining machine learning, skill analysis, and job facilitation to create a comprehensive career platform.</p>
+        </div>
+    </div>
+
+    <div class="learn-more">
+        <button>Learn More</button>
+    </div>
+</section>
+
+<section class="services-section" id="services">
+   
+      <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-8 col-12">
+          <h1 class="text-center fw-bold">Features we Provide</h1>
+        </div>
+      </div>
+      <div class="text-center fw-bold">
+      <p>Our job role prediction service leverages your skills and project experience to accurately suggest the best career path.<br> Empower your job search by receiving tailored role recommendations for your unique profile.</p>
+    
+      </div>    
+      <div class="main section-10">
+      <div class="all">
+        <div class="lefter">
+          <a href="final project part-1/index.html" class="text-decoration-none">
+            <div class="box rounded-3 py-3">
+              <div class="icon d-flex justify-content-center align-items-center">
+                <span class="circle rounded-circle">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+              <h6 class="text-center text-limit-1 mt-2 text-color-black">Job Role Prediction</h6>
+            </div>
+          </a>
+        </div>
+        <div class="left">
+          <a href="final project part-2/index.html" class="text-decoration-none">
+            <div class="box rounded-3 py-3">
+              <div class="icon d-flex justify-content-center align-items-center">
+                <span class="circle rounded-circle">
+                  <i class="fas fa-envelope"></i>
+                </span>
+              </div>
+              <h6 class="text-center text-limit-1 mt-2 text-color-black">Go to Learning Details</h6>
+            </div>
+          </a>
+        </div>
+        <div class="center">
+          <a href="service.html" class="text-decoration-none">
+            <div class="box rounded-3 py-3 center-box">
+              <span>Our Service</span>
+            </div>
+          </a>
+        </div>
+        <div class="right">
+          <a href="final project part-3/search.php" class="text-decoration-none">
+            <div class="box rounded-3 py-3">
+              <div class="icon d-flex justify-content-center align-items-center">
+                <span class="circle rounded-circle">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+              <h6 class="text-center text-limit-1 mt-2 text-color-black">Find Job</h6>
+            </div>
+          </a>
+        </div>
+        <div class="righter">
+          <a href="final project part-3/job.html" class="text-decoration-none">
+            <div class="box rounded-3 py-3">
+              <div class="icon d-flex justify-content-center align-items-center">
+                <span class="circle rounded-circle">
+                  <i class="fas fa-sync-alt"></i>
+                </span>
+              </div>
+              <h6 class="text-center text-limit-1 mt-2 text-color-black">Post you Job</h6>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+<section class="full-contactpage">
+  <section class="contact-section" id="Contact">
+    <div class="content-1">
+        <h2>Contact Us</h2>
+        <p>Reach out to us for personalized career guidance or to inquire about our job role prediction services. We're here to help you take the next step in your professional journey.</p>
+    </div>
+    <div class="contact-container">
+    <div class="contactInfo">
+        <div class="contact-box">
+            <div class="contact-icon"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+            <div class="contact-text">
+                <h4>Address</h4>
+                <p>Erode Sengunthar Engineering College<br>Computer Science and Design</p>
+            </div>
+        </div>
+        <div class="contact-box">
+            <div class="contact-icon"><i class="fa fa-phone" aria-hidden="true"></i> </div>
+            <div class="contact-text">
+                <h4>Phone</h4>
+                <p>+918220834406</p>
+            </div>
+        </div>
+        <div class="contact-box">
+            <div class="contact-icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+            <div class="contact-text">
+                <h4>Email</h4>
+                <p>karthigowtha01@gmail.com</p>
+            </div>
+        </div>
+        <div class="social-media">
+            <a href="#" class="fa fa-facebook"></a>
+            <a href="#" class="fa fa-twitter"></a>
+            <a href="#" class="fa fa-google"></a>
+            <a href="#" class="fa fa-youtube"></a>
+            <a href="#" class="fa fa-instagram"></a>
+        </div>
+    </div>
+    <div class="contact-form">
+        <form>
+            <h2>Send Message</h2>
+            <div class="contact-inputbox">
+                <input type="text" name="" required="required">
+                <span>Full Name</span>
+            </div>
+            <div class="contact-inputbox">
+                <input type="text" name="" required="required">
+                <span>Email</span>
+            </div>
+            <div class="contact-inputbox">
+                <textarea required="required"></textarea>
+                <span>Type Your Message...</span>
+            </div>
+            <div class="contact-inputbox">
+                <input type="submit" name="" value="Send">
+            </div>
+        </form>
+    </div>
+    </div>   
+    
+    
+
+  </section>
+</section>
+
+
+
+
+<script>
+const container = document.getElementById('container');
+const registerBtn = document.getElementById('register');
+const loginBtn = document.getElementById('login');
+
+// Open the popup and show only when clicking the 'Sign In' link
+function openPopup() {
+    container.style.display = 'flex'; // Show the form container
+}
+
+// Close the popup
+function closePopup() {
+    container.style.display = 'none'; // Hide the form container
+}
+
+// Show Sign Up form when 'Sign Up' button is clicked
+registerBtn.addEventListener('click', () => {
+    container.classList.add("active"); // Show Sign Up form
+});
+
+// Show Sign In form when 'Sign In' button is clicked
+loginBtn.addEventListener('click', () => {
+    container.classList.remove("active"); // Show Sign In form
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target == body) {
+        closePopup();
+    }
+});
+// Optionally, open the popup when clicking on an element
+// Example for sign-in link: document.getElementById('signin-link').addEventListener('click', openPopup);
+
+
+
+
+</script>
+</body>
+</html>

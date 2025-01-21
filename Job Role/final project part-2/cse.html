@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">CSE Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    const rolesData = [
+      { role: 'Java Developer', basic: [
+        { tech: 'HTML', note: 'Markup language for creating web pages', link: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+        { tech: 'CSS', note: 'Style sheet language for web page design', link: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+        { tech: 'JavaScript', note: 'Programming language for client-side scripting', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
+        { tech: 'Java', note: 'Object-oriented programming language', link: 'https://www.java.com/en/' }
+      ], main: [
+        { tech: 'Spring Boot', note: 'Framework for building Java-based applications', link: 'https://spring.io/projects/spring-boot' },
+        { tech: 'MySQL', note: 'Relational database management system', link: 'https://www.mysql.com/' }
+      ] },
+ { 
+    role: 'Python Developer', 
+    basic: [
+      { tech: 'Python', note: 'Programming language used for web development, data analysis, automation, etc.', link: 'https://www.python.org/' },
+      { tech: 'Flask', note: 'Micro web framework for Python', link: 'https://flask.palletsprojects.com/' },
+      { tech: 'Django', note: 'High-level Python web framework for rapid development', link: 'https://www.djangoproject.com/' }
+    ], 
+    main: [
+      { tech: 'FastAPI', note: 'Modern, fast web framework for building APIs with Python', link: 'https://fastapi.tiangolo.com/' },
+      { tech: 'PostgreSQL', note: 'Open-source relational database', link: 'https://www.postgresql.org/' }
+    ] 
+  },
+  { 
+    role: '.NET Developer', 
+    basic: [
+      { tech: 'C#', note: 'Programming language for building .NET applications', link: 'https://learn.microsoft.com/en-us/dotnet/csharp/' },
+      { tech: '.NET Framework', note: 'Software development framework for building applications', link: 'https://dotnet.microsoft.com/' }
+    ], 
+    main: [
+      { tech: 'ASP.NET Core', note: 'Cross-platform framework for building modern web applications', link: 'https://dotnet.microsoft.com/apps/aspnet' },
+      { tech: 'Entity Framework', note: 'Object-relational mapping (ORM) framework for .NET', link: 'https://learn.microsoft.com/en-us/ef/' }
+    ] 
+  },
+  { 
+    role: 'Frontend Developer', 
+    basic: [
+      { tech: 'HTML', note: 'Markup language for creating web pages', link: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+      { tech: 'CSS', note: 'Style sheet language for web page design', link: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+      { tech: 'JavaScript', note: 'Programming language for client-side scripting', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' }
+    ], 
+    main: [
+      { tech: 'React.js', note: 'JavaScript library for building user interfaces', link: 'https://reactjs.org/' },
+      { tech: 'Redux', note: 'State management library for JavaScript apps', link: 'https://redux.js.org/' }
+    ] 
+  },
+  { 
+    role: 'Data Scientist', 
+    basic: [
+      { tech: 'Python', note: 'Programming language used for data science and machine learning', link: 'https://www.python.org/' },
+      { tech: 'Statistics', note: 'Branch of mathematics dealing with data analysis', link: 'https://en.wikipedia.org/wiki/Statistics' }
+    ], 
+    main: [
+      { tech: 'TensorFlow', note: 'Open-source platform for machine learning', link: 'https://www.tensorflow.org/' },
+      { tech: 'PyTorch', note: 'Open-source machine learning library', link: 'https://pytorch.org/' }
+    ] 
+  },
+  { 
+    role: 'Backend Developer', 
+    basic: [
+      { tech: 'Node.js', note: 'JavaScript runtime for building server-side applications', link: 'https://nodejs.org/' },
+      { tech: 'Java', note: 'Object-oriented programming language for backend development', link: 'https://www.java.com/en/' }
+    ], 
+    main: [
+      { tech: 'Spring Boot', note: 'Framework for building Java-based applications', link: 'https://spring.io/projects/spring-boot' },
+      { tech: 'MongoDB', note: 'NoSQL database for storing data in JSON-like format', link: 'https://www.mongodb.com/' }
+    ] 
+  },
+  { 
+    role: 'Full Stack Developer', 
+    basic: [
+      { tech: 'HTML', note: 'Markup language for creating web pages', link: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+      { tech: 'CSS', note: 'Style sheet language for web page design', link: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+      { tech: 'JavaScript', note: 'Programming language for client-side scripting', link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' }
+    ], 
+    main: [
+      { tech: 'React', note: 'JavaScript library for building user interfaces', link: 'https://reactjs.org/' },
+      { tech: 'Node.js', note: 'JavaScript runtime for building server-side applications', link: 'https://nodejs.org/' }
+    ] 
+  },
+ { 
+    role: 'Cloud Engineer', 
+    basic: [
+      { tech: 'Linux', note: 'Open-source operating system used for servers and cloud environments', link: 'https://www.kernel.org/' },
+      { tech: 'Networking', note: 'The process of connecting computers and devices to share data', link: 'https://en.wikipedia.org/wiki/Computer_network' }
+    ], 
+    main: [
+      { tech: 'AWS', note: 'Amazon Web Services, cloud computing platform', link: 'https://aws.amazon.com/' },
+      { tech: 'Docker', note: 'Platform for developing, shipping, and running applications in containers', link: 'https://www.docker.com/' }
+    ] 
+  },
+  { 
+    role: 'DevOps Engineer', 
+    basic: [
+      { tech: 'Linux', note: 'Open-source operating system used for servers and cloud environments', link: 'https://www.kernel.org/' },
+      { tech: 'Scripting', note: 'Writing scripts to automate tasks in development and deployment', link: 'https://en.wikipedia.org/wiki/Scripting_language' }
+    ], 
+    main: [
+      { tech: 'Kubernetes', note: 'Open-source platform for automating deployment, scaling, and management of containerized applications', link: 'https://kubernetes.io/' },
+      { tech: 'Jenkins', note: 'Open-source automation server for continuous integration and delivery', link: 'https://www.jenkins.io/' }
+    ] 
+  },
+  { 
+    role: 'Cybersecurity Analyst', 
+    basic: [
+      { tech: 'Networking', note: 'The process of connecting computers and devices to share data', link: 'https://en.wikipedia.org/wiki/Computer_network' },
+      { tech: 'Python', note: 'Programming language often used in cybersecurity for automation and scripts', link: 'https://www.python.org/' }
+    ], 
+    main: [
+      { tech: 'Penetration Testing', note: 'Simulated cyber attack to test the security of systems', link: 'https://en.wikipedia.org/wiki/Penetration_testing' },
+      { tech: 'Firewalls', note: 'Security system to monitor and control incoming and outgoing network traffic', link: 'https://en.wikipedia.org/wiki/Firewall_(computing)' }
+    ] 
+  },
+  { 
+    role: 'Database Administrator', 
+    basic: [
+      { tech: 'SQL', note: 'Structured Query Language used to manage and query databases', link: 'https://www.sql.org/' }
+    ], 
+    main: [
+      { tech: 'Oracle', note: 'Relational database management system developed by Oracle Corporation', link: 'https://www.oracle.com/database/' },
+      { tech: 'PostgreSQL', note: 'Open-source relational database management system', link: 'https://www.postgresql.org/' }
+    ] 
+  },
+  { 
+    role: 'Mobile App Developer', 
+    basic: [
+      { tech: 'Java', note: 'Object-oriented programming language used for Android app development', link: 'https://www.java.com/en/' },
+      { tech: 'Kotlin', note: 'Programming language used for Android app development', link: 'https://kotlinlang.org/' }
+    ], 
+    main: [
+      { tech: 'Flutter', note: 'UI toolkit for building natively compiled applications for mobile from a single codebase', link: 'https://flutter.dev/' },
+      { tech: 'React Native', note: 'JavaScript framework for building mobile apps using React', link: 'https://reactnative.dev/' }
+    ] 
+  },
+  { 
+    role: 'Game Developer', 
+    basic: [
+      { tech: 'C++', note: 'Programming language used in game development for high-performance applications', link: 'https://isocpp.org/' },
+      { tech: 'Java', note: 'Programming language used in game development', link: 'https://www.java.com/en/' }
+    ], 
+    main: [
+      { tech: 'Unity', note: 'Cross-platform game engine for creating 2D and 3D games', link: 'https://unity.com/' },
+      { tech: 'Unreal Engine', note: 'Game engine developed by Epic Games for building games and real-time applications', link: 'https://www.unrealengine.com/' }
+    ] 
+  },
+  { 
+    role: 'Machine Learning Engineer', 
+    basic: [
+      { tech: 'Python', note: 'Programming language used for machine learning and data science', link: 'https://www.python.org/' },
+      { tech: 'Statistics', note: 'Branch of mathematics dealing with data analysis', link: 'https://en.wikipedia.org/wiki/Statistics' }
+    ], 
+    main: [
+      { tech: 'Scikit-learn', note: 'Machine learning library for Python', link: 'https://scikit-learn.org/' },
+      { tech: 'Keras', note: 'Deep learning API for Python', link: 'https://keras.io/' }
+    ] 
+  },
+  { 
+    role: 'UI/UX Designer', 
+    basic: [
+      { tech: 'Figma', note: 'Design tool for creating user interfaces and prototyping', link: 'https://www.figma.com/' },
+      { tech: 'Sketch', note: 'Design tool for vector graphics and web/app design', link: 'https://www.sketch.com/' }
+    ], 
+    main: [
+      { tech: 'Adobe XD', note: 'Design tool for user experience and interface design', link: 'https://www.adobe.com/products/xd.html' },
+      { tech: 'Prototyping', note: 'Process of creating early models of a product to test ideas', link: 'https://en.wikipedia.org/wiki/Prototyping' }
+    ] 
+  },
+  { 
+    role: 'Blockchain Developer', 
+    basic: [
+      { tech: 'Python', note: 'Programming language used for developing blockchain applications', link: 'https://www.python.org/' },
+      { tech: 'Solidity', note: 'Programming language for writing smart contracts on Ethereum', link: 'https://soliditylang.org/' }
+    ], 
+    main: [
+      { tech: 'Ethereum', note: 'Decentralized platform for building and deploying smart contracts', link: 'https://ethereum.org/' },
+      { tech: 'Smart Contracts', note: 'Self-executing contracts with the terms directly written into code', link: 'https://en.wikipedia.org/wiki/Smart_contract' }
+    ] 
+  },
+  { 
+    role: 'IoT Engineer', 
+    basic: [
+      { tech: 'C', note: 'Programming language used for low-level programming in IoT', link: 'https://en.wikipedia.org/wiki/C_(programming_language)' },
+      { tech: 'Python', note: 'Programming language used for IoT devices and automation', link: 'https://www.python.org/' }
+    ], 
+    main: [
+      { tech: 'Raspberry Pi', note: 'Single-board computer used for IoT projects', link: 'https://www.raspberrypi.org/' },
+      { tech: 'Sensors', note: 'Devices that collect data from the physical world in IoT systems', link: 'https://en.wikipedia.org/wiki/Sensor' }
+    ] 
+  },
+  { 
+    role: 'AR/VR Developer', 
+    basic: [
+      { tech: 'C#', note: 'Programming language used in AR/VR development, especially for Unity', link: 'https://learn.microsoft.com/en-us/dotnet/csharp/' },
+      { tech: 'Unity', note: 'Cross-platform game engine used for AR/VR development', link: 'https://unity.com/' }
+    ], 
+    main: [
+      { tech: '3D Modeling', note: 'Creating 3D objects for use in AR/VR experiences', link: 'https://en.wikipedia.org/wiki/3D_computer_graphics' },
+      { tech: 'Oculus', note: 'Brand of VR headsets used for immersive virtual experiences', link: 'https://www.meta.com/quest/' }
+    ] 
+  },{ 
+    role: 'IT Support Specialist', 
+    basic: [
+      { tech: 'Networking', note: 'The practice of connecting computers and devices to share data', link: 'https://en.wikipedia.org/wiki/Computer_network' },
+      { tech: 'Hardware', note: 'Physical components of a computer system', link: 'https://en.wikipedia.org/wiki/Computer_hardware' }
+    ], 
+    main: [
+      { tech: 'Troubleshooting', note: 'The process of diagnosing and resolving problems', link: 'https://en.wikipedia.org/wiki/Troubleshooting' },
+      { tech: 'Active Directory', note: 'Microsoft directory service for managing networked resources', link: 'https://en.wikipedia.org/wiki/Active_Directory' }
+    ] 
+  },
+  { 
+    role: 'Technical Writer', 
+    basic: [
+      { tech: 'Writing Skills', note: 'Ability to convey information clearly in writing', link: 'https://en.wikipedia.org/wiki/Technical_writing' },
+      { tech: 'Documentation', note: 'Creating technical documents to support systems and software', link: 'https://en.wikipedia.org/wiki/Documentation' }
+    ], 
+    main: [
+      { tech: 'Markdown', note: 'Lightweight markup language used for formatting text', link: 'https://en.wikipedia.org/wiki/Markdown' },
+      { tech: 'API Documentation', note: 'Writing documentation for software interfaces that allow interaction with other software', link: 'https://en.wikipedia.org/wiki/API' }
+    ] 
+  },
+  { 
+    role: 'Big Data Engineer', 
+    basic: [
+      { tech: 'Java', note: 'Programming language used for building scalable applications', link: 'https://www.java.com/en/' },
+      { tech: 'SQL', note: 'Structured Query Language for managing relational databases', link: 'https://www.sql.org/' }
+    ], 
+    main: [
+      { tech: 'Hadoop', note: 'Open-source framework for processing large data sets', link: 'https://hadoop.apache.org/' },
+      { tech: 'Spark', note: 'Unified analytics engine for big data processing', link: 'https://spark.apache.org/' }
+    ] 
+  },
+  { 
+    role: 'Embedded Systems Engineer', 
+    basic: [
+      { tech: 'C', note: 'Programming language used in embedded systems for hardware control', link: 'https://en.wikipedia.org/wiki/C_(programming_language)' },
+      { tech: 'Microcontrollers', note: 'Small computers embedded in devices to perform specific tasks', link: 'https://en.wikipedia.org/wiki/Microcontroller' }
+    ], 
+    main: [
+      { tech: 'RTOS', note: 'Real-time operating system for embedded systems', link: 'https://en.wikipedia.org/wiki/Real-time_operating_system' },
+      { tech: 'VHDL', note: 'Hardware description language for FPGA and ASIC design', link: 'https://en.wikipedia.org/wiki/VHDL' }
+    ] 
+  },
+  { 
+    role: 'Robotics Engineer', 
+    basic: [
+      { tech: 'C++', note: 'Programming language commonly used in robotics', link: 'https://isocpp.org/' },
+      { tech: 'Matlab', note: 'Numerical computing environment used for robotics development', link: 'https://www.mathworks.com/products/matlab.html' }
+    ], 
+    main: [
+      { tech: 'ROS', note: 'Robot Operating System for controlling robots', link: 'https://www.ros.org/' },
+      { tech: 'Simulink', note: 'Simulation and model-based design software', link: 'https://www.mathworks.com/products/simulink.html' }
+    ] 
+  },
+  { 
+    role: 'AI Researcher', 
+    basic: [
+      { tech: 'Python', note: 'Programming language widely used in AI development', link: 'https://www.python.org/' },
+      { tech: 'Algorithms', note: 'Step-by-step procedure for solving computational problems', link: 'https://en.wikipedia.org/wiki/Algorithm' }
+    ], 
+    main: [
+      { tech: 'Deep Learning', note: 'Subset of machine learning that deals with neural networks', link: 'https://en.wikipedia.org/wiki/Deep_learning' },
+      { tech: 'Reinforcement Learning', note: 'Learning approach where agents take actions to maximize cumulative reward', link: 'https://en.wikipedia.org/wiki/Reinforcement_learning' }
+    ] 
+  },
+  { 
+    role: 'Network Engineer', 
+    basic: [
+      { tech: 'Networking', note: 'The practice of connecting computers and devices to share data', link: 'https://en.wikipedia.org/wiki/Computer_network' },
+      { tech: 'Security', note: 'Measures to protect networks and systems from attacks', link: 'https://en.wikipedia.org/wiki/Computer_security' }
+    ], 
+    main: [
+      { tech: 'Cisco', note: 'Leading provider of network equipment and software', link: 'https://www.cisco.com/' },
+      { tech: 'VPN', note: 'Virtual Private Network that secures online connections', link: 'https://en.wikipedia.org/wiki/Virtual_private_network' }
+    ] 
+  },
+  { 
+    role: 'System Analyst', 
+    basic: [
+      { tech: 'Business Processes', note: 'Analysis of business activities to improve efficiency', link: 'https://en.wikipedia.org/wiki/Business_process_management' },
+      { tech: 'SQL', note: 'Structured Query Language for managing relational databases', link: 'https://www.sql.org/' }
+    ], 
+    main: [
+      { tech: 'ERP', note: 'Enterprise Resource Planning system used for managing business processes', link: 'https://en.wikipedia.org/wiki/Enterprise_resource_planning' },
+      { tech: 'Data Analysis', note: 'The process of inspecting and interpreting data to draw conclusions', link: 'https://en.wikipedia.org/wiki/Data_analysis' }
+    ] 
+  },
+  { 
+    role: 'Web Developer', 
+    basic: [
+      { tech: 'HTML', note: 'Markup language for creating web pages', link: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+      { tech: 'CSS', note: 'Style sheet language used for web page design', link: 'https://developer.mozilla.org/en-US/docs/Web/CSS' }
+    ], 
+    main: [
+      { tech: 'WordPress', note: 'Content management system for building websites', link: 'https://wordpress.org/' },
+      { tech: 'PHP', note: 'Server-side scripting language used for web development', link: 'https://www.php.net/' }
+    ] 
+  },
+  { 
+    role: 'Technical Consultant', 
+    basic: [
+      { tech: 'Problem Solving', note: 'Ability to find solutions to technical issues', link: 'https://en.wikipedia.org/wiki/Problem_solving' },
+      { tech: 'SQL', note: 'Structured Query Language for managing relational databases', link: 'https://www.sql.org/' }
+    ], 
+    main: [
+      { tech: 'Salesforce', note: 'Customer relationship management platform', link: 'https://www.salesforce.com/' },
+      { tech: 'CRM Tools', note: 'Software used to manage a company’s interactions with current and potential customers', link: 'https://en.wikipedia.org/wiki/Customer_relationship_management' }
+    ] 
+  },
+  { 
+    role: 'Product Manager', 
+    basic: [
+      { tech: 'Project Management', note: 'The process of planning and executing projects', link: 'https://en.wikipedia.org/wiki/Project_management' },
+      { tech: 'Communication', note: 'Ability to convey information clearly', link: 'https://en.wikipedia.org/wiki/Communication' }
+    ], 
+    main: [
+      { tech: 'Agile', note: 'Project management methodology for iterative development', link: 'https://en.wikipedia.org/wiki/Agile_software_development' },
+      { tech: 'JIRA', note: 'Issue tracking and project management software', link: 'https://www.atlassian.com/software/jira' }
+    ] 
+  },
+  {
+    role: 'IT Architect',
+    basic: [
+      { tech: 'System Design', note: 'Designing systems to meet specific business needs', link: 'https://en.wikipedia.org/wiki/System_architecture' },
+      { tech: 'Cloud Computing', note: 'Use of remote servers to store, manage, and process data', link: 'https://en.wikipedia.org/wiki/Cloud_computing' }
+    ],
+    main: [
+      { tech: 'Solution Architecture', note: 'Designing and managing technology solutions for enterprises', link: 'https://en.wikipedia.org/wiki/Solution_architecture' },
+      { tech: 'Enterprise Architecture', note: 'A strategic approach to organizing and managing IT infrastructure', link: 'https://en.wikipedia.org/wiki/Enterprise_architecture' }
+    ]
+  },
+{
+    role: 'Cloud Solutions Architect',
+    basic: [
+      { tech: 'Cloud Computing', note: 'Use of remote servers to store, manage, and process data', link: 'https://en.wikipedia.org/wiki/Cloud_computing' },
+      { tech: 'Virtualization', note: 'Creating virtual versions of hardware, operating systems, or network resources', link: 'https://en.wikipedia.org/wiki/Virtualization' }
+    ],
+    main: [
+      { tech: 'AWS', note: 'Cloud platform provided by Amazon', link: 'https://aws.amazon.com/' },
+      { tech: 'Azure', note: 'Cloud computing service provided by Microsoft', link: 'https://azure.microsoft.com/' }
+    ]
+  },
+  {
+    role: 'Network Security Engineer',
+    basic: [
+      { tech: 'Firewall', note: 'Security system for monitoring and controlling network traffic', link: 'https://en.wikipedia.org/wiki/Firewall_(computing)' },
+      { tech: 'Encryption', note: 'Converting data into a code to prevent unauthorized access', link: 'https://en.wikipedia.org/wiki/Encryption' }
+    ],
+    main: [
+      { tech: 'Intrusion Detection System', note: 'System for detecting unauthorized access to networks', link: 'https://en.wikipedia.org/wiki/Intrusion_detection_system' },
+      { tech: 'VPN', note: 'Virtual Private Network for securing online communications', link: 'https://en.wikipedia.org/wiki/Virtual_private_network' }
+    ]
+  },
+  {
+    role: 'IT Project Manager',
+    basic: [
+      { tech: 'Project Management', note: 'The process of leading projects from inception to completion', link: 'https://en.wikipedia.org/wiki/Project_management' },
+      { tech: 'Agile Methodology', note: 'Iterative approach to software development and project management', link: 'https://en.wikipedia.org/wiki/Agile_software_development' }
+    ],
+    main: [
+      { tech: 'Scrum', note: 'Agile framework for managing projects', link: 'https://en.wikipedia.org/wiki/Scrum_(software_development)' },
+      { tech: 'Kanban', note: 'Visual method for managing work in progress', link: 'https://en.wikipedia.org/wiki/Kanban' }
+    ]
+  },
+  {
+    role: 'Data Engineer',
+    basic: [
+      { tech: 'SQL', note: 'Structured Query Language for managing data in relational databases', link: 'https://en.wikipedia.org/wiki/SQL' },
+      { tech: 'ETL', note: 'Process of Extracting, Transforming, and Loading data into a system', link: 'https://en.wikipedia.org/wiki/Extract,_transform,_load' }
+    ],
+    main: [
+      { tech: 'Hadoop', note: 'Open-source framework for processing large data sets', link: 'https://en.wikipedia.org/wiki/Hadoop' },
+      { tech: 'Apache Kafka', note: 'Distributed event streaming platform', link: 'https://kafka.apache.org/' }
+    ]
+  },
+  {
+    role: 'AI Engineer',
+    basic: [
+      { tech: 'Machine Learning', note: 'Use of algorithms to enable computers to learn from data', link: 'https://en.wikipedia.org/wiki/Machine_learning' },
+      { tech: 'Deep Learning', note: 'Subset of machine learning using neural networks', link: 'https://en.wikipedia.org/wiki/Deep_learning' }
+    ],
+    main: [
+      { tech: 'TensorFlow', note: 'Open-source framework for machine learning', link: 'https://www.tensorflow.org/' },
+      { tech: 'PyTorch', note: 'Machine learning library for Python', link: 'https://pytorch.org/' }
+    ]
+  },
+ {
+    role: 'Fiction Writer',
+    basic: [
+      { tech: 'Creative Writing', note: 'Crafting imaginative and engaging stories', link: 'https://en.wikipedia.org/wiki/Creative_writing' },
+      { tech: 'Plot Development', note: 'Building narrative structures and story arcs', link: 'https://en.wikipedia.org/wiki/Plot_(narrative)' }
+    ],
+    main: [
+      { tech: 'Character Development', note: 'Creating compelling and relatable characters', link: 'https://en.wikipedia.org/wiki/Characterization' },
+      { tech: 'Genre Writing', note: 'Specializing in specific fiction genres like sci-fi or fantasy', link: 'https://en.wikipedia.org/wiki/Fiction_genre' }
+    ]
+  },
+  {
+    role: 'Non-Fiction Author',
+    basic: [
+      { tech: 'Research Skills', note: 'Gathering factual and reliable information', link: 'https://en.wikipedia.org/wiki/Research' },
+      { tech: 'Expository Writing', note: 'Conveying information clearly and accurately', link: 'https://en.wikipedia.org/wiki/Expository_writing' }
+    ],
+    main: [
+      { tech: 'Technical Writing', note: 'Producing guides and manuals on specialized topics', link: 'https://en.wikipedia.org/wiki/Technical_writing' },
+      { tech: 'Memoir Writing', note: 'Documenting personal experiences and reflections', link: 'https://en.wikipedia.org/wiki/Memoir' }
+    ]
+  },
+  {
+    role: 'Poet',
+    basic: [
+      { tech: 'Meter and Rhyme', note: 'Using rhythm and rhyme schemes in poetry', link: 'https://en.wikipedia.org/wiki/Meter_(poetry)' },
+      { tech: 'Imagery', note: 'Creating vivid mental pictures through descriptive language', link: 'https://en.wikipedia.org/wiki/Imagery' }
+    ],
+    main: [
+      { tech: 'Free Verse', note: 'Writing poetry without regular rhyme or meter', link: 'https://en.wikipedia.org/wiki/Free_verse' },
+      { tech: 'Sonnets and Forms', note: 'Mastering traditional poetic forms like sonnets', link: 'https://en.wikipedia.org/wiki/Sonnet' }
+    ]
+  },
+  {
+    role: 'Screenwriter',
+    basic: [
+      { tech: 'Script Formatting', note: 'Structuring scripts according to industry standards', link: 'https://en.wikipedia.org/wiki/Screenwriting' },
+      { tech: 'Dialogue Writing', note: 'Crafting realistic and engaging character speech', link: 'https://en.wikipedia.org/wiki/Dialogue' }
+    ],
+    main: [
+      { tech: 'Scene Development', note: 'Building compelling scenes for visual storytelling', link: 'https://en.wikipedia.org/wiki/Scene_(drama)' },
+      { tech: 'Storyboarding', note: 'Visualizing scenes and sequences before filming', link: 'https://en.wikipedia.org/wiki/Storyboard' }
+    ]
+  },
+  {
+    role: 'Copywriter',
+    basic: [
+      { tech: 'Persuasive Writing', note: 'Crafting compelling messages to drive action', link: 'https://en.wikipedia.org/wiki/Copywriting' },
+      { tech: 'SEO Writing', note: 'Optimizing content for search engine visibility', link: 'https://en.wikipedia.org/wiki/Search_engine_optimization' }
+    ],
+    main: [
+      { tech: 'Brand Messaging', note: 'Developing consistent and impactful brand voices', link: 'https://en.wikipedia.org/wiki/Brand' },
+      { tech: 'Ad Campaigns', note: 'Creating effective advertising copy for campaigns', link: 'https://en.wikipedia.org/wiki/Advertising_campaign' }
+    ]
+  },
+  {
+    role: 'Technical Writer',
+    basic: [
+      { tech: 'Documentation', note: 'Producing clear and comprehensive technical documents', link: 'https://en.wikipedia.org/wiki/Documentation' },
+      { tech: 'Information Architecture', note: 'Structuring information for clarity and usability', link: 'https://en.wikipedia.org/wiki/Information_architecture' }
+    ],
+    main: [
+      { tech: 'User Manuals', note: 'Writing instructional content for end-users', link: 'https://en.wikipedia.org/wiki/User_guide' },
+      { tech: 'API Documentation', note: 'Creating guides for software developers', link: 'https://en.wikipedia.org/wiki/API_documentation' }
+    ]
+  },
+  {
+    role: 'Journalist',
+    basic: [
+      { tech: 'Investigative Reporting', note: 'Uncovering in-depth stories and exposing issues', link: 'https://en.wikipedia.org/wiki/Investigative_journalism' },
+      { tech: 'News Writing', note: 'Producing factual and timely news articles', link: 'https://en.wikipedia.org/wiki/Journalism' }
+    ],
+    main: [
+      { tech: 'Interviewing', note: 'Gathering insights and quotes through interviews', link: 'https://en.wikipedia.org/wiki/Interview' },
+      { tech: 'Feature Writing', note: 'Creating detailed and narrative-rich articles', link: 'https://en.wikipedia.org/wiki/Feature_story' }
+    ]
+  }
+    ];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'CSE Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

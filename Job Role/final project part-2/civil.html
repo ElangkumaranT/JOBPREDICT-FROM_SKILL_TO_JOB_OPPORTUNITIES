@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Civil Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Civil Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    const rolesData = [
+  {
+    role: 'Structural Engineer',
+    basic: [
+      { tech: 'Structural Analysis', link: 'https://en.wikipedia.org/wiki/Structural_analysis' },
+      { tech: 'Materials Science', link: 'https://en.wikipedia.org/wiki/Materials_science' }
+    ],
+    main: [
+      { tech: 'Reinforced Concrete', link: 'https://en.wikipedia.org/wiki/Reinforced_concrete' },
+      { tech: 'Steel Structures', link: 'https://en.wikipedia.org/wiki/Structural_steel' }
+    ]
+  },
+  {
+    role: 'Geotechnical Engineer',
+    basic: [
+      { tech: 'Soil Mechanics', link: 'https://en.wikipedia.org/wiki/Soil_mechanics' },
+      { tech: 'Rock Mechanics', link: 'https://en.wikipedia.org/wiki/Rock_mechanics' }
+    ],
+    main: [
+      { tech: 'Foundation Design', link: 'https://en.wikipedia.org/wiki/Foundation_design' },
+      { tech: 'Soil Testing', link: 'https://en.wikipedia.org/wiki/Soil_testing' }
+    ]
+  },
+  {
+    role: 'Transportation Engineer',
+    basic: [
+      { tech: 'Traffic Flow', link: 'https://en.wikipedia.org/wiki/Traffic_flow' },
+      { tech: 'Road Design', link: 'https://en.wikipedia.org/wiki/Road_design' }
+    ],
+    main: [
+      { tech: 'Highway Engineering', link: 'https://en.wikipedia.org/wiki/Highway_engineering' },
+      { tech: 'Transportation Systems', link: 'https://en.wikipedia.org/wiki/Transportation_systems' }
+    ]
+  },
+  {
+    role: 'Water Resources Engineer',
+    basic: [
+      { tech: 'Hydrology', link: 'https://en.wikipedia.org/wiki/Hydrology' },
+      { tech: 'Hydraulics', link: 'https://en.wikipedia.org/wiki/Hydraulics' }
+    ],
+    main: [
+      { tech: 'Flood Control', link: 'https://en.wikipedia.org/wiki/Flood_control' },
+      { tech: 'Water Treatment', link: 'https://en.wikipedia.org/wiki/Water_treatment' }
+    ]
+  },
+  {
+    role: 'Environmental Engineer',
+    basic: [
+      { tech: 'Environmental Regulations', link: 'https://en.wikipedia.org/wiki/Environmental_law' },
+      { tech: 'Wastewater Treatment', link: 'https://en.wikipedia.org/wiki/Wastewater_treatment' }
+    ],
+    main: [
+      { tech: 'Air Quality', link: 'https://en.wikipedia.org/wiki/Air_quality' },
+      { tech: 'Sustainability', link: 'https://en.wikipedia.org/wiki/Sustainability' }
+    ]
+  },
+  {
+    role: 'Construction Manager',
+    basic: [
+      { tech: 'Construction Planning', link: 'https://en.wikipedia.org/wiki/Construction_planning' },
+      { tech: 'Cost Estimation', link: 'https://en.wikipedia.org/wiki/Construction_cost_estimation' }
+    ],
+    main: [
+      { tech: 'Project Management', link: 'https://en.wikipedia.org/wiki/Project_management' },
+      { tech: 'Construction Safety', link: 'https://en.wikipedia.org/wiki/Construction_safety' }
+    ]
+  },
+  {
+    role: 'Surveying Engineer',
+    basic: [
+      { tech: 'Surveying Techniques', link: 'https://en.wikipedia.org/wiki/Surveying' },
+      { tech: 'Mapping', link: 'https://en.wikipedia.org/wiki/Mapping' }
+    ],
+    main: [
+      { tech: 'GPS Technology', link: 'https://en.wikipedia.org/wiki/GPS' },
+      { tech: 'GIS', link: 'https://en.wikipedia.org/wiki/Geographic_information_system' }
+    ]
+  },
+  {
+    role: 'Urban Planner',
+    basic: [
+      { tech: 'Urban Design', link: 'https://en.wikipedia.org/wiki/Urban_design' },
+      { tech: 'Zoning', link: 'https://en.wikipedia.org/wiki/Zoning' }
+    ],
+    main: [
+      { tech: 'Land Use Planning', link: 'https://en.wikipedia.org/wiki/Land_use_planning' },
+      { tech: 'Public Policy', link: 'https://en.wikipedia.org/wiki/Public_policy' }
+    ]
+  },
+  {
+    role: 'Building Services Engineer',
+    basic: [
+      { tech: 'HVAC', link: 'https://en.wikipedia.org/wiki/HVAC' },
+      { tech: 'Electrical Systems', link: 'https://en.wikipedia.org/wiki/Electrical_engineering' }
+    ],
+    main: [
+      { tech: 'Building Automation', link: 'https://en.wikipedia.org/wiki/Building_automation' },
+      { tech: 'Energy Efficiency', link: 'https://en.wikipedia.org/wiki/Energy_efficiency' }
+    ]
+  },
+  {
+    role: 'Coastal Engineer',
+    basic: [
+      { tech: 'Coastal Processes', link: 'https://en.wikipedia.org/wiki/Coastal_processes' },
+      { tech: 'Marine Engineering', link: 'https://en.wikipedia.org/wiki/Marine_engineering' }
+    ],
+    main: [
+      { tech: 'Shoreline Protection', link: 'https://en.wikipedia.org/wiki/Shoreline_protection' },
+      { tech: 'Coastal Erosion', link: 'https://en.wikipedia.org/wiki/Coastal_erosion' }
+    ]
+  },
+  {
+    role: 'Tunnel Engineer',
+    basic: [
+      { tech: 'Geotechnical Design', link: 'https://en.wikipedia.org/wiki/Geotechnical_engineering' },
+      { tech: 'Tunnel Boring Machines', link: 'https://en.wikipedia.org/wiki/Tunnel_boring_machine' }
+    ],
+    main: [
+      { tech: 'Underground Construction', link: 'https://en.wikipedia.org/wiki/Underground_construction' },
+      { tech: 'Tunnel Safety', link: 'https://en.wikipedia.org/wiki/Tunnel_safety' }
+    ]
+  },
+  {
+    role: 'Hydraulic Engineer',
+    basic: [
+      { tech: 'Fluid Mechanics', link: 'https://en.wikipedia.org/wiki/Fluid_mechanics' },
+      { tech: 'Pipeline Design', link: 'https://en.wikipedia.org/wiki/Pipeline_transport' }
+    ],
+    main: [
+      { tech: 'Pump Stations', link: 'https://en.wikipedia.org/wiki/Pump_station' },
+      { tech: 'Water Distribution', link: 'https://en.wikipedia.org/wiki/Water_supply_network' }
+    ]
+  },
+  {
+    role: 'Materials Engineer',
+    basic: [
+      { tech: 'Construction Materials', link: 'https://en.wikipedia.org/wiki/Construction_materials' },
+      { tech: 'Concrete Technology', link: 'https://en.wikipedia.org/wiki/Concrete' }
+    ],
+    main: [
+      { tech: 'Cement', link: 'https://en.wikipedia.org/wiki/Cement' },
+      { tech: 'Asphalt', link: 'https://en.wikipedia.org/wiki/Asphalt' }
+    ]
+  },
+  {
+    role: 'Fire Protection Engineer',
+    basic: [
+      { tech: 'Fire Safety', link: 'https://en.wikipedia.org/wiki/Fire_safety' },
+      { tech: 'Building Codes', link: 'https://en.wikipedia.org/wiki/Building_code' }
+    ],
+    main: [
+      { tech: 'Fire Suppression Systems', link: 'https://en.wikipedia.org/wiki/Fire_suppression_system' },
+      { tech: 'Fire Risk Assessment', link: 'https://en.wikipedia.org/wiki/Fire_risk_assessment' }
+    ]
+  },
+  {
+    role: 'Acoustic Engineer',
+    basic: [
+      { tech: 'Sound Waves', link: 'https://en.wikipedia.org/wiki/Sound_wave' },
+      { tech: 'Noise Control', link: 'https://en.wikipedia.org/wiki/Noise_control' }
+    ],
+    main: [
+      { tech: 'Acoustic Insulation', link: 'https://en.wikipedia.org/wiki/Acoustic_insulation' },
+      { tech: 'Building Design', link: 'https://en.wikipedia.org/wiki/Building_design' }
+    ]
+  },
+  {
+    role: 'Structural Health Monitoring Engineer',
+    basic: [
+      { tech: 'Structural Monitoring', link: 'https://en.wikipedia.org/wiki/Structural_health_monitoring' },
+      { tech: 'Sensors', link: 'https://en.wikipedia.org/wiki/Sensor' }
+    ],
+    main: [
+      { tech: 'Data Collection', link: 'https://en.wikipedia.org/wiki/Data_collection' },
+      { tech: 'Condition Assessment', link: 'https://en.wikipedia.org/wiki/Condition_assessment' }
+    ]
+  },
+  {
+    role: 'Floodplain Manager',
+    basic: [
+      { tech: 'Flood Risk', link: 'https://en.wikipedia.org/wiki/Flood_risk' },
+      { tech: 'Floodplain Mapping', link: 'https://en.wikipedia.org/wiki/Floodplain_mapping' }
+    ],
+    main: [
+      { tech: 'Flood Control', link: 'https://en.wikipedia.org/wiki/Flood_control' },
+      { tech: 'Water Management', link: 'https://en.wikipedia.org/wiki/Water_management' }
+    ]
+  },
+  {
+    role: 'Building Inspector',
+    basic: [
+      { tech: 'Building Codes', link: 'https://en.wikipedia.org/wiki/Building_code' },
+      { tech: 'Safety Regulations', link: 'https://en.wikipedia.org/wiki/Construction_safety' }
+    ],
+    main: [
+      { tech: 'Structural Inspections', link: 'https://en.wikipedia.org/wiki/Structural_inspection' },
+      { tech: 'Code Compliance', link: 'https://en.wikipedia.org/wiki/Code_compliance' }
+    ]
+  },
+  {
+    role: 'Seismic Engineer',
+    basic: [
+      { tech: 'Seismic Design', link: 'https://en.wikipedia.org/wiki/Seismic_design' },
+      { tech: 'Earthquake Engineering', link: 'https://en.wikipedia.org/wiki/Earthquake_engineering' }
+    ],
+    main: [
+      { tech: 'Seismic Analysis', link: 'https://en.wikipedia.org/wiki/Seismic_analysis' },
+      { tech: 'Structural Resilience', link: 'https://en.wikipedia.org/wiki/Resilience_(engineering)' }
+    ]
+  },
+  {
+    role: 'Concrete Specialist',
+    basic: [
+      { tech: 'Concrete Mixtures', link: 'https://en.wikipedia.org/wiki/Concrete_mix_design' },
+      { tech: 'Strength Testing', link: 'https://en.wikipedia.org/wiki/Concrete_strength' }
+    ],
+    main: [
+      { tech: 'Reinforced Concrete', link: 'https://en.wikipedia.org/wiki/Reinforced_concrete' },
+      { tech: 'Pre-stressed Concrete', link: 'https://en.wikipedia.org/wiki/Prestressed_concrete' }
+    ]
+  },
+  {
+    role: 'Roadway Designer',
+    basic: [
+      { tech: 'Pavement Design', link: 'https://en.wikipedia.org/wiki/Pavement_design' },
+      { tech: 'Road Geometry', link: 'https://en.wikipedia.org/wiki/Road_design' }
+    ],
+    main: [
+      { tech: 'Traffic Flow Optimization', link: 'https://en.wikipedia.org/wiki/Traffic_flow' },
+      { tech: 'Geometric Design', link: 'https://en.wikipedia.org/wiki/Geometric_design' }
+    ]
+  },
+  {
+    role: 'Bridge Engineer',
+    basic: [
+      { tech: 'Bridge Design', link: 'https://en.wikipedia.org/wiki/Bridge_engineering' },
+      { tech: 'Structural Analysis', link: 'https://en.wikipedia.org/wiki/Structural_analysis' }
+    ],
+    main: [
+      { tech: 'Bridge Materials', link: 'https://en.wikipedia.org/wiki/Bridge_materials' },
+      { tech: 'Load Bearing Analysis', link: 'https://en.wikipedia.org/wiki/Load_analysis' }
+    ]
+  }
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Civil Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

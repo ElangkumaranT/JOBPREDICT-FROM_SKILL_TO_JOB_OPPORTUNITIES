@@ -1,0 +1,133 @@
+
+.main {
+  margin: 7rem auto;
+
+}
+.all {
+  display: flex;
+  perspective: 10px;
+  transform: perspective(300px) rotateX(20deg);
+  will-change: perspective;
+  perspective-origin: center center;
+  transition: all 1.3s ease-out;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+
+.all:hover {
+  perspective: 1000px;
+  transition: all 1.3s ease-in;
+  transform: perspective(10000px) rotateX(0deg);
+  .text {
+    opacity: 1;
+  }
+  & > div {
+    opacity: 1;
+    transition-delay: 0s;
+  } 
+  .center-box {
+    opacity: 0;
+  }
+}
+
+
+
+.left, .center, .right, .lefter, .righter {
+  width: 230px;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  
+  opacity: 0;
+  transition: all .3s ease;
+  transition-delay: 1s;
+  position: relative;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* background-color: #58d; */
+  cursor: pointer;
+  background-blend-mode: color-burn;
+}
+.text {
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all .3s ease;
+  bottom: 0;
+  left: 5px;
+  position: absolute;
+  will-change: transform;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(100, 100, 255, .6)
+}
+.lefter {
+  transform: translateX(-60px) translateZ(-50px) rotateY(-10deg);
+}
+.left {
+  transform: translateX(-30px) translateZ(-25px) rotateY(-5deg);
+}
+.center {
+  opacity: 1;
+  background-image: url(https://img.freepik.com/free-vector/interaction-design-concept-illustration_114360-1442.jpg);
+}
+.right {
+  transform: translateX(30px) translateZ(-25px) rotateY(5deg);
+}
+.righter {
+  transform: translateX(60px) translateZ(-50px) rotateY(10deg);
+}
+.center-box {
+  font-weight: 300;
+  font-size: 2rem;
+  color: #fff;
+  transition: all .6s ease;
+  width: 100%;
+  height: 100%;
+  background-color: #303050;
+  background-image: radial-gradient(circle at center top, #ff542114, #ff5421);
+  border-radius: 10px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, .8);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-10 .box {
+  transition: 0.4s;
+  box-shadow: 0 0 150px rgba(0, 0, 0, 0.1);
+  border: 1px solid #00000012;
+}
+.center {
+box-shadow: 0 0 30px 10px rgb(255, 84, 33, .6);
+}
+
+.section-10 .circle {
+  background: #fff;
+  font-size: 1.4rem;
+  height: 70px;
+  width: 78px;
+  display: grid;
+  place-items: center;
+}
+
+.section-10 .box i {
+  color: #ff5421;
+}
+
+.section-10 .box:hover {
+  background: #FF5421;
+  border: 1px solid #FF5421;
+}
+
+.section-10 .box:hover h6 {
+  color: #fff;
+}
+h1 {
+  color: #FF5421;
+}
+img{
+  height: 50px;
+  width: 50px;
+
+}

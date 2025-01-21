@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Information Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Information Form</h1>
+        <form action="submit.php" method="POST">
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" name="companyName" required>
+
+            <label for="jobRole">Job Role:</label>
+            <input type="text" id="jobRole" name="jobRole" required>
+
+            <label for="salary">Salary:</label>
+            <input type="number" id="salary" name="salary" required>
+
+            <label for="experience">Experience (in years):</label>
+            <input type="number" id="experience" name="experience" required>
+
+            <label for="skillset">Skillset:</label>
+            <textarea id="skillset" name="skillset" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

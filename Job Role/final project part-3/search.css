@@ -1,0 +1,202 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px;
+    background-color: rgba(5, 42, 68, 255);;
+    color: white;
+
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: -2% 6% 0% 6%; /* Removed negative margin for better alignment */
+}
+
+.filter-bar select,
+.filter-bar input,
+.filter-bar button {
+    padding: 15px; /* Slightly reduced padding for better spacing */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1; /* Dynamic width for better responsiveness */
+    min-width: 260px; /* Ensures elements don't shrink too small */
+    background-color: rgb(209, 204, 204);
+}
+
+.filter-bar button {
+    background-color: #00b7c2;
+    color: white;
+    cursor: pointer;
+}
+
+
+.job-list {
+    padding:20px 100px 0px 100px;
+}
+
+.job-card {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    padding: 40px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.job-left h2 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.company-btn {
+    display: inline-block;
+    background-color: #00b7c2;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-decoration: none;
+}
+.company-btn:hover{
+    background-color:white;
+    color: #00b7c2;
+}
+
+.skills {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-left: 20%;
+}
+
+.skill-tag {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.job-right {
+    text-align: right;
+}
+
+.job-right p {
+    margin: 0;
+}
+
+.check-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px; /* Increase horizontal padding for a better shape */
+    border: 2px solid black; /* Add a black border for contrast */
+    border-radius: 20px; /* Makes the sides rounded */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold; /* Makes the text more prominent */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+    margin-top: 30px;
+}
+
+.check-btn:hover {
+    background-color: black;
+    color: white;
+    border-color: black; /* Keeps the border consistent */
+}
+
+/* Popup Styles */
+.job-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80%;
+    max-width: 800px;
+}
+
+.popup-content h2 {
+    font-size: 2.5rem;
+}
+
+.popup-content p {
+    margin: 10px 0;
+}
+
+.popup-content .skill-tag {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 20px;
+    margin-top: 10%;
+}
+
+.close-btn {
+    position: absolute;
+    top: -5px;
+    right: 20px;
+    background-color: rgb(236, 240, 235);
+    color: black;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 30px;
+
+}
+.close-btn:hover{
+    background-color: red;
+   
+}
+
+.apply-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px; /* Increase horizontal padding for a better shape */
+    border: 2px solid black; /* Add a black border for contrast */
+    border-radius: 20px; /* Makes the sides rounded */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold; /* Makes the text more prominent */
+    transition: background-color 0.3s, color 0.3s; /* Smooth hover effect */
+    margin-left: 90%;
+}
+.apply-btn:hover{
+    background-color: black;
+    color: white;
+    border-color: black;
+
+}
+.no-jobs {
+    padding: 20px;
+    background-color: #fff3cd;
+    color: #856404;
+    text-align: center;
+    border: 1px solid #ffeeba;
+    border-radius: 5px;
+    margin: 20px;
+    font-size: 1.2rem;
+}

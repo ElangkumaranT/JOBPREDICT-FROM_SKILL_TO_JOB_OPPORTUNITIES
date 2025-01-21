@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <link rel="stylesheet" href="search.css">
+    <script>
+        // Function to fetch jobs with filters
+        async function fetchJobs() {
+            const jobTitle = document.getElementById('jobTitleFilter').value;
+            const jobType = document.getElementById('jobTypeSelect').value;
+            const jobLocation = document.getElementById('jobLocationSelect').value;
+
+            const data = new URLSearchParams();
+            data.append('filter', 'true');
+            data.append('jobTitle', jobTitle);
+            data.append('jobType', jobType);
+            data.append('jobLocation', jobLocation);
+
+            const response = await fetch("index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: data.toString(),
+            });
+
+            const jobs = await response.json();
+            renderJobs(jobs);
+        }
+
+        // Function to render job listings
+        function renderJobs(jobs) {
+            const jobList = document.querySelector(".job-list");
+            jobList.innerHTML = "";  // Clear the existing jobs
+
+            if (jobs.length === 0) {
+                jobList.innerHTML = "<p>No job listings available.</p>";
+                return;
+            }
+
+            jobs.forEach((job) => {
+                const jobCard = `
+                    <div class="job-card">
+                        <div class="job-left">
+                            <h2>${job.job_title}</h2>
+                            <a href="${job.company_url}" target="_blank" class="company-btn">${job.company_name}</a>
+                        </div>
+                        <div class="job-center">
+                            <div class="skills">${job.skills.split(",").map(skill => `<span class="skill-tag">${skill.trim()}</span>`).join("")}</div>
+                        </div>
+                        <div class="job-right">
+                            <div class="job-meta">${job.job_type} | ${job.job_location}</div>
+                            <button class="check-btn" onclick="openJobDetails(${job.id})">Check</button>
+                        </div>
+                    </div>
+                `;
+                jobList.innerHTML += jobCard;
+            });
+        }
+
+        // Fetch jobs on page load
+        window.onload = fetchJobs;
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Open Job Listing</h1>
+    </header>
+
+    <div class="filter-bar">
+        <input type="text" id="jobTitleFilter" placeholder="Filter by Job Title" oninput="fetchJobs()">
+        <select id="jobTypeSelect" onchange="fetchJobs()">
+            <option value="">All</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Remote">Remote</option>
+        </select>
+        <select id="jobLocationSelect" onchange="fetchJobs()">
+            <option value="">All</option>
+            <option value="Remote">Remote</option>
+            <option value="In-office">In-office</option>
+        </select>
+    </div>
+
+    <div class="job-list">
+        <?php if ($jobs->num_rows > 0): ?>
+            <?php while ($row = $jobs->fetch_assoc()): ?>
+                <div class="job-card">
+                    <div class="job-left">
+                        <h2><?= htmlspecialchars($row['job_title']) ?></h2>
+                        <a href="<?= htmlspecialchars($row['company_url']) ?>" target="_blank" class="company-btn"><?= htmlspecialchars($row['company_name']) ?></a>
+                    </div>
+                    <div class="job-center">
+                        <div class="skills">
+                            <?php foreach (explode(",", $row['skills']) as $skill): ?>
+                                <span class="skill-tag"><?= htmlspecialchars(trim($skill)) ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="job-right">
+                        <div class="job-meta"><?= htmlspecialchars($row['job_type']) ?> | <?= htmlspecialchars($row['job_location']) ?></div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p>No job listings available.</p>
+        <?php endif; ?>
+    </div>
+</body>
+</html>

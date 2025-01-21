@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Chemical Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    const rolesData = [
+{
+  role: 'Process Engineer',
+  basic: [
+    { tech: 'Chemical Processes', note: 'Understanding of chemical reactions and systems', link: 'https://en.wikipedia.org/wiki/Chemical_process' },
+    { tech: 'Process Control', note: 'Managing the behavior of processes to achieve desired outcomes', link: 'https://en.wikipedia.org/wiki/Process_control' }
+  ],
+  main: [
+    { tech: 'HYSYS', note: 'A process simulation tool used in chemical engineering', link: 'https://en.wikipedia.org/wiki/HYSYS' },
+    { tech: 'ASPEN Plus', note: 'A process simulation software for chemical engineering', link: 'https://en.wikipedia.org/wiki/ASPEN_Plus' }
+  ]
+},
+{
+  role: 'Chemical Plant Operator',
+  basic: [
+    { tech: 'Plant Operations', note: 'Operating the machinery and equipment in chemical plants', link: 'https://en.wikipedia.org/wiki/Chemical_plant' },
+    { tech: 'Safety Procedures', note: 'Following safety protocols to prevent accidents', link: 'https://en.wikipedia.org/wiki/Occupational_safety_and_health' }
+  ],
+  main: [
+    { tech: 'DCS', note: 'Distributed Control System for monitoring and controlling plant processes', link: 'https://en.wikipedia.org/wiki/Distributed_control_system' },
+    { tech: 'SCADA Systems', note: 'Supervisory Control and Data Acquisition for industrial control', link: 'https://en.wikipedia.org/wiki/SCADA' }
+  ]
+},
+{
+  role: 'R&D Chemist',
+  basic: [
+    { tech: 'Analytical Chemistry', note: 'Analyzing substances and their components', link: 'https://en.wikipedia.org/wiki/Analytical_chemistry' },
+    { tech: 'Synthesis', note: 'Creating new compounds through chemical reactions', link: 'https://en.wikipedia.org/wiki/Chemical_synthesis' }
+  ],
+  main: [
+    { tech: 'Spectroscopy', note: 'Using light to analyze the properties of substances', link: 'https://en.wikipedia.org/wiki/Spectroscopy' },
+    { tech: 'Chromatography', note: 'Techniques for separating mixtures', link: 'https://en.wikipedia.org/wiki/Chromatography' }
+  ]
+},
+{
+  role: 'Environmental Engineer',
+  basic: [
+    { tech: 'Environmental Regulations', note: 'Understanding laws that protect the environment', link: 'https://en.wikipedia.org/wiki/Environmental_law' },
+    { tech: 'Waste Management', note: 'Managing waste products to minimize environmental impact', link: 'https://en.wikipedia.org/wiki/Waste_management' }
+  ],
+  main: [
+    { tech: 'Air Quality Monitoring', note: 'Monitoring pollutants in the air', link: 'https://en.wikipedia.org/wiki/Air_quality_monitoring' },
+    { tech: 'Water Treatment', note: 'Techniques to improve water quality', link: 'https://en.wikipedia.org/wiki/Water_purification' }
+  ]
+},
+{
+  role: 'Corrosion Engineer',
+  basic: [
+    { tech: 'Material Science', note: 'Studying the properties and structures of materials', link: 'https://en.wikipedia.org/wiki/Materials_science' },
+    { tech: 'Corrosion Mechanisms', note: 'Understanding the chemical processes that lead to material degradation', link: 'https://en.wikipedia.org/wiki/Corrosion' }
+  ],
+  main: [
+    { tech: 'Cathodic Protection', note: 'A method to prevent corrosion of metal surfaces', link: 'https://en.wikipedia.org/wiki/Cathodic_protection' },
+    { tech: 'Coatings', note: 'Using protective coatings to prevent corrosion', link: 'https://en.wikipedia.org/wiki/Coating' }
+  ]
+},
+{
+  role: 'Polymer Engineer',
+  basic: [
+    { tech: 'Polymer Chemistry', note: 'Study of polymers and their chemical properties', link: 'https://en.wikipedia.org/wiki/Polymer_chemistry' },
+    { tech: 'Material Properties', note: 'Understanding the physical properties of materials', link: 'https://en.wikipedia.org/wiki/Material_science' }
+  ],
+  main: [
+    { tech: 'Polymer Processing', note: 'Manufacturing polymers and plastic materials', link: 'https://en.wikipedia.org/wiki/Polymer_processing' },
+    { tech: 'Composite Materials', note: 'Materials made from two or more constituent materials', link: 'https://en.wikipedia.org/wiki/Composite_material' }
+  ]
+},
+{
+  role: 'Petrochemical Engineer',
+  basic: [
+    { tech: 'Petroleum Refining', note: 'The process of transforming crude oil into useful products', link: 'https://en.wikipedia.org/wiki/Petroleum_refining' },
+    { tech: 'Chemical Processes', note: 'Understanding chemical reactions in petrochemical industries', link: 'https://en.wikipedia.org/wiki/Chemical_process' }
+  ],
+  main: [
+    { tech: 'Cracking Units', note: 'Process of breaking down larger molecules into smaller ones', link: 'https://en.wikipedia.org/wiki/Cracking_(chemistry)' },
+    { tech: 'Catalysis', note: 'Accelerating chemical reactions using catalysts', link: 'https://en.wikipedia.org/wiki/Catalysis' }
+  ]
+},
+{
+  role: 'Safety Engineer',
+  basic: [
+    { tech: 'Risk Assessment', note: 'Evaluating risks in various industrial processes', link: 'https://en.wikipedia.org/wiki/Risk_assessment' },
+    { tech: 'Safety Standards', note: 'Implementing safety regulations and guidelines', link: 'https://en.wikipedia.org/wiki/Occupational_safety_and_health' }
+  ],
+  main: [
+    { tech: 'HAZOP', note: 'Hazard and Operability study to identify risks in a process', link: 'https://en.wikipedia.org/wiki/HAZOP' },
+    { tech: 'Incident Investigation', note: 'Investigating accidents to prevent future occurrences', link: 'https://en.wikipedia.org/wiki/Accident_analysis' }
+  ]
+},
+{
+  role: 'Biochemical Engineer',
+  basic: [
+    { tech: 'Biotechnology', note: 'Using biological systems in manufacturing processes', link: 'https://en.wikipedia.org/wiki/Biotechnology' },
+    { tech: 'Chemical Engineering', note: 'Applying chemical processes to biological systems', link: 'https://en.wikipedia.org/wiki/Chemical_engineering' }
+  ],
+  main: [
+    { tech: 'Fermentation', note: 'Biological process used in manufacturing of bio-based products', link: 'https://en.wikipedia.org/wiki/Fermentation' },
+    { tech: 'Downstream Processing', note: 'Processing of biological products for commercial use', link: 'https://en.wikipedia.org/wiki/Downstream_processing' }
+  ]
+},
+{
+  role: 'Energy Engineer',
+  basic: [
+    { tech: 'Energy Systems', note: 'Design and implementation of energy generation systems', link: 'https://en.wikipedia.org/wiki/Energy_engineering' },
+    { tech: 'Efficiency', note: 'Optimizing the performance of energy systems', link: 'https://en.wikipedia.org/wiki/Energy_efficiency' }
+  ],
+  main: [
+    { tech: 'Solar Energy', note: 'Harnessing energy from the sun', link: 'https://en.wikipedia.org/wiki/Solar_energy' },
+    { tech: 'Biofuels', note: 'Energy produced from organic materials', link: 'https://en.wikipedia.org/wiki/Biofuel' }
+  ]
+},
+{
+  role: 'Water Treatment Specialist',
+  basic: [
+    { tech: 'Water Chemistry', note: 'Study of water properties and contaminants', link: 'https://en.wikipedia.org/wiki/Water_chemistry' },
+    { tech: 'Filtration', note: 'Removing particles and contaminants from water', link: 'https://en.wikipedia.org/wiki/Water_filtration' }
+  ],
+  main: [
+    { tech: 'RO Systems', note: 'Reverse Osmosis systems for water purification', link: 'https://en.wikipedia.org/wiki/Reverse_osmosis' },
+    { tech: 'Desalination', note: 'Removing salt from seawater to produce fresh water', link: 'https://en.wikipedia.org/wiki/Desalination' }
+  ]
+},
+{
+  role: 'Process Control Engineer',
+  basic: [
+    { tech: 'PID Control', note: 'Implementing Proportional-Integral-Derivative controllers to maintain desired system behaviors', link: 'https://en.wikipedia.org/wiki/Process_control' },
+    { tech: 'Control Systems Design', note: 'Designing systems that control industrial processes', link: 'https://en.wikipedia.org/wiki/Control_system' }
+  ],
+  main: [
+    { tech: 'Automation Systems', note: 'Developing automated systems to control manufacturing processes', link: 'https://en.wikipedia.org/wiki/Automation' },
+    { tech: 'System Modeling', note: 'Creating models to predict system behavior under different conditions', link: 'https://en.wikipedia.org/wiki/System_theory' }
+  ]
+},
+{
+  role: 'Chemical Reactor Engineer',
+  basic: [
+    { tech: 'Reactor Design', note: 'Designing chemical reactors to ensure efficient reactions', link: 'https://en.wikipedia.org/wiki/Chemical_reactor' },
+    { tech: 'Kinetics', note: 'Understanding the rates of chemical reactions and how to optimize them', link: 'https://en.wikipedia.org/wiki/Chemical_kinetics' }
+  ],
+  main: [
+    { tech: 'Catalysis', note: 'Using catalysts to speed up reactions without being consumed', link: 'https://en.wikipedia.org/wiki/Catalysis' },
+    { tech: 'Thermodynamics', note: 'Applying thermodynamic principles to understand chemical reactions', link: 'https://en.wikipedia.org/wiki/Thermodynamics' }
+  ]
+},
+{
+  role: 'Pharmaceutical Process Engineer',
+  basic: [
+    { tech: 'Drug Formulation', note: 'Developing formulations for pharmaceutical products', link: 'https://en.wikipedia.org/wiki/Pharmaceutical_formulation' },
+    { tech: 'Good Manufacturing Practices (GMP)', note: 'Ensuring manufacturing processes meet regulatory standards', link: 'https://en.wikipedia.org/wiki/Good_manufacturing_practice' }
+  ],
+  main: [
+    { tech: 'Bioprocess Engineering', note: 'Designing processes for the production of pharmaceutical products using living organisms', link: 'https://en.wikipedia.org/wiki/Bioprocess_engineering' },
+    { tech: 'Sterilization Techniques', note: 'Ensuring pharmaceutical products are free from harmful microorganisms', link: 'https://en.wikipedia.org/wiki/Sterilization' }
+  ]
+},
+{
+  role: 'Chemical Plant Designer',
+  basic: [
+    { tech: 'Plant Layout', note: 'Designing the physical layout of chemical plants for efficient operations', link: 'https://en.wikipedia.org/wiki/Plant_layout' },
+    { tech: 'Piping Design', note: 'Designing piping systems to transport chemicals safely and efficiently', link: 'https://en.wikipedia.org/wiki/Piping_and_instrumentation_diagram' }
+  ],
+  main: [
+    { tech: 'Hazard Analysis', note: 'Performing hazard assessments to ensure plant safety', link: 'https://en.wikipedia.org/wiki/Hazard_and_Operability_study' },
+    { tech: 'Process Simulation', note: 'Using simulation software to model chemical processes', link: 'https://en.wikipedia.org/wiki/Process_simulation' }
+  ]
+},
+{
+  role: 'Sustainability Engineer',
+  basic: [
+    { tech: 'Green Chemistry', note: 'Designing chemical processes to minimize environmental impact', link: 'https://en.wikipedia.org/wiki/Green_chemistry' },
+    { tech: 'Energy Efficiency', note: 'Improving the energy efficiency of chemical processes', link: 'https://en.wikipedia.org/wiki/Energy_efficiency' }
+  ],
+  main: [
+    { tech: 'Renewable Energy', note: 'Developing processes to generate energy from renewable sources', link: 'https://en.wikipedia.org/wiki/Renewable_energy' },
+    { tech: 'Waste Minimization', note: 'Designing systems to reduce waste in chemical production', link: 'https://en.wikipedia.org/wiki/Waste_minimization' }
+  ]
+},
+{
+  role: 'Environmental Compliance Engineer',
+  basic: [
+    { tech: 'Environmental Regulations', note: 'Ensuring chemical processes comply with environmental laws', link: 'https://en.wikipedia.org/wiki/Environmental_law' },
+    { tech: 'Pollution Control', note: 'Developing methods to reduce or eliminate pollution from chemical processes', link: 'https://en.wikipedia.org/wiki/Pollution_control' }
+  ],
+  main: [
+    { tech: 'Air Quality Management', note: 'Monitoring and controlling air pollutants in industrial environments', link: 'https://en.wikipedia.org/wiki/Air_pollution_control' },
+    { tech: 'Water Treatment', note: 'Designing systems to treat wastewater from chemical plants', link: 'https://en.wikipedia.org/wiki/Water_pollution_control' }
+  ]
+},
+{
+  role: 'Material Science Engineer',
+  basic: [
+    { tech: 'Materials Selection', note: 'Choosing materials for chemical engineering applications based on their properties', link: 'https://en.wikipedia.org/wiki/Materials_science' },
+    { tech: 'Polymer Processing', note: 'Studying and designing processes to produce polymers', link: 'https://en.wikipedia.org/wiki/Polymer_processing' }
+  ],
+  main: [
+    { tech: 'Composite Materials', note: 'Designing materials made from two or more different substances', link: 'https://en.wikipedia.org/wiki/Composite_material' },
+    { tech: 'Nanomaterials', note: 'Developing materials at the nanometer scale for industrial use', link: 'https://en.wikipedia.org/wiki/Nanomaterials' }
+  ]
+},
+{
+  role: 'Energy Storage Engineer',
+  basic: [
+    { tech: 'Battery Chemistry', note: 'Understanding the chemical processes involved in energy storage devices', link: 'https://en.wikipedia.org/wiki/Battery' },
+    { tech: 'Supercapacitors', note: 'Developing high-capacity storage devices for rapid energy discharge', link: 'https://en.wikipedia.org/wiki/Supercapacitor' }
+  ],
+  main: [
+    { tech: 'Electrochemical Cells', note: 'Designing cells to store and release electrical energy', link: 'https://en.wikipedia.org/wiki/Electrochemical_cell' },
+    { tech: 'Energy Storage Systems', note: 'Developing systems to store energy for later use', link: 'https://en.wikipedia.org/wiki/Energy_storage' }
+  ]
+}
+// More roles can be added following the same pattern
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Chemical Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

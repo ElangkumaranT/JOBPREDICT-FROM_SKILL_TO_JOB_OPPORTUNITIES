@@ -1,0 +1,18 @@
+ <button class="back-button" onclick="history.back()">Back</button>
+
+.back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robotic Department</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <h1 id="heading">Robotic Department - Roles and Technologies</h1>
+
+  
+  <div class="search-bar" id="search-bar">
+    <input type="text" id="role-search" placeholder="Search for a role...">
+  </div>
+
+  <div class="container">
+    <div id="roles-list" class="roles"></div>
+    <div id="role-details" class="role-details" style="display: none;"></div>
+    <div class="action-buttons" style="display: none;">
+      <button class="back-button" onclick="hideRoleDetails()">Cancel</button>
+      <button class="download-button" onclick="downloadRolePDF()">Download PDF</button>
+    </div>
+  </div>
+
+  <button class="back-button1" onclick="history.back()"><- Prev</button>
+
+  <script>
+    const rolesData = [
+{
+  role: 'Robotics Engineer',
+  basic: [
+    { tech: 'Mechanical Design', note: 'Design of mechanical components for robotics', link: 'https://en.wikipedia.org/wiki/Mechanical_design' },
+    { tech: 'Automation', note: 'Implementation of systems to operate automatically', link: 'https://en.wikipedia.org/wiki/Automation' }
+  ],
+  main: [
+    { tech: 'Robotic Arms', note: 'Mechanized arms used in industrial and research settings', link: 'https://en.wikipedia.org/wiki/Robotic_arm' },
+    { tech: 'Servo Motors', note: 'Actuators for precise control of robotic motion', link: 'https://en.wikipedia.org/wiki/Servo_motor' }
+  ]
+},
+{
+  role: 'AI Engineer',
+  basic: [
+    { tech: 'Machine Learning', note: 'Training algorithms to make predictions or decisions', link: 'https://en.wikipedia.org/wiki/Machine_learning' },
+    { tech: 'Computer Vision', note: 'Techniques for enabling machines to interpret visual data', link: 'https://en.wikipedia.org/wiki/Computer_vision' }
+  ],
+  main: [
+    { tech: 'Deep Learning', note: 'Subset of machine learning using neural networks', link: 'https://en.wikipedia.org/wiki/Deep_learning' },
+    { tech: 'Neural Networks', note: 'Algorithms modeled after the human brain structure', link: 'https://en.wikipedia.org/wiki/Artificial_neural_network' }
+  ]
+},
+{
+  role: 'Mechatronics Engineer',
+  basic: [
+    { tech: 'Electronics', note: 'Study and application of electronic circuits and systems', link: 'https://en.wikipedia.org/wiki/Electronics' },
+    { tech: 'Mechanical Systems', note: 'Design and functionality of mechanical components', link: 'https://en.wikipedia.org/wiki/Mechanical_system' }
+  ],
+  main: [
+    { tech: 'Sensors', note: 'Devices to detect and respond to changes in the environment', link: 'https://en.wikipedia.org/wiki/Sensor' },
+    { tech: 'Control Systems', note: 'Systems that manage, command, and regulate device behavior', link: 'https://en.wikipedia.org/wiki/Control_system' }
+  ]
+},
+{
+  role: 'Robotics Software Engineer',
+  basic: [
+    { tech: 'Programming', note: 'Writing code to control robotic systems', link: 'https://en.wikipedia.org/wiki/Programming' },
+    { tech: 'Algorithms', note: 'Step-by-step procedures for solving computational problems', link: 'https://en.wikipedia.org/wiki/Algorithm' }
+  ],
+  main: [
+    { tech: 'ROS (Robot Operating System)', note: 'Framework for robot software development', link: 'https://en.wikipedia.org/wiki/Robot_Operating_System' },
+    { tech: 'Embedded Systems', note: 'Specialized computing systems within robotic devices', link: 'https://en.wikipedia.org/wiki/Embedded_system' }
+  ]
+},
+{
+  role: 'Control Systems Engineer',
+  basic: [
+    { tech: 'Control Theory', note: 'Mathematical principles to regulate system behavior', link: 'https://en.wikipedia.org/wiki/Control_theory' },
+    { tech: 'Dynamics', note: 'Study of forces and motion in systems', link: 'https://en.wikipedia.org/wiki/Dynamics_(mechanics)' }
+  ],
+  main: [
+    { tech: 'PID Control', note: 'Proportional-Integral-Derivative control mechanism', link: 'https://en.wikipedia.org/wiki/PID_controller' },
+    { tech: 'State Estimation', note: 'Predicting system states from observed data', link: 'https://en.wikipedia.org/wiki/State_estimation' }
+  ]
+},
+{
+  role: 'Autonomous Systems Engineer',
+  basic: [
+    { tech: 'Autonomous Vehicles', note: 'Vehicles capable of sensing and navigating independently', link: 'https://en.wikipedia.org/wiki/Autonomous_vehicle' },
+    { tech: 'Navigation', note: 'Guidance techniques for autonomous robots', link: 'https://en.wikipedia.org/wiki/Navigation' }
+  ],
+  main: [
+    { tech: 'SLAM', note: 'Simultaneous Localization and Mapping for navigation', link: 'https://en.wikipedia.org/wiki/Simultaneous_localization_and_mapping' },
+    { tech: 'Path Planning', note: 'Algorithmic determination of optimal robot paths', link: 'https://en.wikipedia.org/wiki/Path_planning' }
+  ]
+},
+{
+  role: 'Robotic Technician',
+  basic: [
+    { tech: 'Robotics Maintenance', note: 'Routine upkeep and repair of robotic systems', link: 'https://en.wikipedia.org/wiki/Industrial_robot' },
+    { tech: 'Diagnostics', note: 'Troubleshooting and identifying issues in robots', link: 'https://en.wikipedia.org/wiki/Diagnostic' }
+  ],
+  main: [
+    { tech: 'Robotic Assembly', note: 'Construction and integration of robotic components', link: 'https://en.wikipedia.org/wiki/Assembly_line' },
+    { tech: 'System Troubleshooting', note: 'Identifying and resolving system errors', link: 'https://en.wikipedia.org/wiki/Troubleshooting' }
+  ]
+},
+{
+  role: 'Robotic Vision Engineer',
+  basic: [
+    { tech: 'Image Processing', note: 'Analyzing and manipulating digital images', link: 'https://en.wikipedia.org/wiki/Image_processing' },
+    { tech: 'Computer Vision', note: 'Understanding images and videos computationally', link: 'https://en.wikipedia.org/wiki/Computer_vision' }
+  ],
+  main: [
+    { tech: '3D Vision', note: 'Extracting depth and 3D structure from images', link: 'https://en.wikipedia.org/wiki/3D_computer_vision' },
+    { tech: 'Optical Sensors', note: 'Sensors that detect light and convert it into signals', link: 'https://en.wikipedia.org/wiki/Optical_sensor' }
+  ]
+},
+{
+  role: 'Artificial Intelligence Specialist',
+  basic: [
+    { tech: 'AI Techniques', note: 'Methods and approaches for developing AI', link: 'https://en.wikipedia.org/wiki/Artificial_intelligence' },
+    { tech: 'Problem Solving', note: 'AI-driven strategies for tackling complex issues', link: 'https://en.wikipedia.org/wiki/Problem_solving' }
+  ],
+  main: [
+    { tech: 'Reinforcement Learning', note: 'Learning through rewards and penalties', link: 'https://en.wikipedia.org/wiki/Reinforcement_learning' },
+    { tech: 'AI Algorithms', note: 'Core computational methods for AI', link: 'https://en.wikipedia.org/wiki/Algorithm' }
+  ]
+},
+{
+  role: 'Robotics Researcher',
+  basic: [
+    { tech: 'Robotics Theory', note: 'Study of theoretical principles in robotics', link: 'https://en.wikipedia.org/wiki/Robotics' },
+    { tech: 'Experimental Design', note: 'Methodology for conducting robotics experiments', link: 'https://en.wikipedia.org/wiki/Experimental_design' }
+  ],
+  main: [
+    { tech: 'Prototyping', note: 'Building early models to test robotic concepts', link: 'https://en.wikipedia.org/wiki/Prototype' },
+    { tech: 'Simulation', note: 'Using virtual environments to test robotic systems', link: 'https://en.wikipedia.org/wiki/Simulation' }
+  ]
+},
+{
+  role: 'Human-Robot Interaction Specialist',
+  basic: [
+    { tech: 'Psychology', note: 'Understanding human behavior for improved interactions', link: 'https://en.wikipedia.org/wiki/Psychology' },
+    { tech: 'Robotics', note: 'Study and application of robots in human environments', link: 'https://en.wikipedia.org/wiki/Robotics' }
+  ],
+  main: [
+    { tech: 'Haptic Feedback', note: 'Technology enabling tactile feedback in robotics', link: 'https://en.wikipedia.org/wiki/Haptic_technology' },
+    { tech: 'Gesture Recognition', note: 'Interpreting human gestures for robotic control', link: 'https://en.wikipedia.org/wiki/Gesture_recognition' }
+  ]
+},
+{
+  role: 'Embedded Systems Engineer',
+  basic: [
+    { tech: 'Microcontrollers', note: 'Small computers embedded in robotic systems', link: 'https://en.wikipedia.org/wiki/Microcontroller' },
+    { tech: 'Embedded Design', note: 'Design of hardware and software for embedded systems', link: 'https://en.wikipedia.org/wiki/Embedded_system' }
+  ],
+  main: [
+    { tech: 'Real-time Systems', note: 'Systems requiring immediate processing and responses', link: 'https://en.wikipedia.org/wiki/Real-time_computing' },
+    { tech: 'Firmware Development', note: 'Programming low-level software for hardware', link: 'https://en.wikipedia.org/wiki/Firmware' }
+  ]
+},
+{
+  role: 'Robotics Project Manager',
+  basic: [
+    { tech: 'Project Planning', note: 'Organizing tasks, resources, and timelines for robotics projects', link: 'https://en.wikipedia.org/wiki/Project_management' },
+    { tech: 'Team Coordination', note: 'Ensuring effective collaboration among project members', link: 'https://en.wikipedia.org/wiki/Teamwork' }
+  ],
+  main: [
+    { tech: 'Risk Management', note: 'Identifying and mitigating project risks', link: 'https://en.wikipedia.org/wiki/Risk_management' },
+    { tech: 'Budgeting', note: 'Allocating financial resources effectively for projects', link: 'https://en.wikipedia.org/wiki/Budget' }
+  ]
+},
+{
+  role: 'Robotic Systems Integrator',
+  basic: [
+    { tech: 'System Design', note: 'Architecting integrated robotic solutions', link: 'https://en.wikipedia.org/wiki/Systems_design' },
+    { tech: 'Integration', note: 'Combining components into a functional whole', link: 'https://en.wikipedia.org/wiki/System_integration' }
+  ],
+  main: [
+    { tech: 'Sensor Integration', note: 'Integrating sensory devices into robotic systems', link: 'https://en.wikipedia.org/wiki/Sensor' },
+    { tech: 'Robot Assembly', note: 'Putting together robotic parts for final products', link: 'https://en.wikipedia.org/wiki/Assembly_line' }
+  ]
+},
+{
+  role: 'Sensor Systems Engineer',
+  basic: [
+    { tech: 'Sensors', note: 'Devices for detecting and responding to environmental input', link: 'https://en.wikipedia.org/wiki/Sensor' },
+    { tech: 'Signal Processing', note: 'Analyzing and interpreting sensor data', link: 'https://en.wikipedia.org/wiki/Signal_processing' }
+  ],
+  main: [
+    { tech: 'LIDAR', note: 'Light detection and ranging for 3D mapping', link: 'https://en.wikipedia.org/wiki/Lidar' },
+    { tech: 'Ultrasonic Sensors', note: 'Sensors that use sound waves for detection', link: 'https://en.wikipedia.org/wiki/Ultrasonic_sensor' }
+  ]
+},
+{
+  role: 'Swarm Robotics Engineer',
+  basic: [
+    { tech: 'Multi-Robot Systems', note: 'Designing collaborative robotic networks', link: 'https://en.wikipedia.org/wiki/Multi-robot_system' },
+    { tech: 'Distributed Algorithms', note: 'Algorithms for decentralized robotic operations', link: 'https://en.wikipedia.org/wiki/Distributed_algorithm' }
+  ],
+  main: [
+    { tech: 'Swarm Intelligence', note: 'Collective behavior of decentralized systems', link: 'https://en.wikipedia.org/wiki/Swarm_intelligence' },
+    { tech: 'Collaborative Robotics', note: 'Robots designed to work together on tasks', link: 'https://en.wikipedia.org/wiki/Collaborative_robot' }
+  ]
+},
+{
+  role: 'Robot Design Engineer',
+  basic: [
+    { tech: 'Mechanical Design', note: 'Developing structural aspects of robots', link: 'https://en.wikipedia.org/wiki/Mechanical_design' },
+    { tech: 'Materials Science', note: 'Understanding materials for optimal robot performance', link: 'https://en.wikipedia.org/wiki/Materials_science' }
+  ],
+  main: [
+    { tech: 'CAD Modeling', note: 'Using software to design robot components', link: 'https://en.wikipedia.org/wiki/Computer-aided_design' },
+    { tech: 'Prototyping', note: 'Building test models for robotic systems', link: 'https://en.wikipedia.org/wiki/Prototype' }
+  ]
+},
+{
+  role: 'Robot Security Specialist',
+  basic: [
+    { tech: 'Cybersecurity', note: 'Protecting robots from cyber threats', link: 'https://en.wikipedia.org/wiki/Cybersecurity' },
+    { tech: 'Robotics', note: 'Understanding the integration of security in robotics', link: 'https://en.wikipedia.org/wiki/Robotics' }
+  ],
+  main: [
+    { tech: 'Security Protocols', note: 'Rules to secure robotic communications', link: 'https://en.wikipedia.org/wiki/Communication_protocol' },
+    { tech: 'Data Encryption', note: 'Securing data in robotic systems', link: 'https://en.wikipedia.org/wiki/Encryption' }
+  ]
+},
+{
+  role: 'Artificial Muscle Engineer',
+  basic: [
+    { tech: 'Actuators', note: 'Devices to move and control mechanical systems', link: 'https://en.wikipedia.org/wiki/Actuator' },
+    { tech: 'Soft Robotics', note: 'Designing robots with flexible, deformable materials', link: 'https://en.wikipedia.org/wiki/Soft_robotics' }
+  ],
+  main: [
+    { tech: 'Artificial Muscles', note: 'Materials that mimic muscle behavior', link: 'https://en.wikipedia.org/wiki/Artificial_muscle' },
+    { tech: 'Shape Memory Alloys', note: 'Metals that return to original shape after deformation', link: 'https://en.wikipedia.org/wiki/Shape-memory_alloy' }
+  ]
+}
+];
+
+   
+    document.addEventListener('DOMContentLoaded', () => {
+      const rolesList = document.getElementById('roles-list');
+      const roleDetails = document.getElementById('role-details');
+      const actionButtons = document.querySelector('.action-buttons');
+      const searchInput = document.getElementById('role-search');
+      const searchBar = document.getElementById('search-bar');
+      const heading=document.getElementById('heading');
+
+      renderRoles(rolesData);
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredRoles = rolesData.filter(role =>
+          role.role.toLowerCase().includes(query)
+        );
+        renderRoles(filteredRoles);
+      });
+
+      function renderRoles(roles) {
+        rolesList.innerHTML = '';
+        roles.forEach(role => {
+          const roleDiv = document.createElement('div');
+          roleDiv.className = 'role';
+          roleDiv.textContent = role.role;
+          roleDiv.onclick = () => displayRoleDetails(role);
+          rolesList.appendChild(roleDiv);
+        });
+      }
+
+      function displayRoleDetails(role) {
+        rolesList.style.display = 'none';
+        searchBar.style.display = 'none';
+        roleDetails.style.display = 'flex';
+        actionButtons.style.display = 'flex';
+
+
+        roleDetails.innerHTML = '';
+        [...role.basic, ...role.main].forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'tech-card';
+          document.querySelector('h1').textContent = `${role.role} - Technologies`;
+          card.innerHTML = `
+            <h3>${item.tech}</h3>
+            <p>${item.note}</p>
+            <button onclick="window.open('${item.link}', '_blank')">View Notes</button>
+          `;
+
+          roleDetails.appendChild(card);
+        });
+      }
+
+      window.hideRoleDetails = function () {
+        document.querySelector('h1').textContent = 'Robotics Department - Roles and Technologies';
+        rolesList.style.display = 'flex';
+        searchBar.style.display = 'block';
+        roleDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      };
+
+      window.downloadRolePDF = function () {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  let yPosition = 20;
+  doc.setFontSize(16);
+  doc.text('Role Details', 14, yPosition);
+
+  yPosition += 10;
+
+  [...rolesData[0].basic, ...rolesData[0].main].forEach(item => {
+    doc.setFontSize(12);
+    doc.text(`Tech: ${item.tech}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Note: ${item.note}`, 14, yPosition);
+    yPosition += 8;
+    doc.text(`Link: ${item.link}`, 14, yPosition);
+    yPosition += 10;
+  });
+
+  doc.save('Role_Details.pdf');
+};
+
+    });
+  </script>
+
+</body>
+</html>

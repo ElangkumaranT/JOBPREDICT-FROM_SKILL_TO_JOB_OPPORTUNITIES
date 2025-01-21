@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Role Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+<style>
+    #back-b {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background-color: #0056b3;
+    } 
+    .whole {
+        display: flex; /* Using flexbox to create a two-column layout */
+        justify-content: space-between;
+        align-items: center;
+         /* Ensuring it takes the full width */
+        /* Height for the section */
+        background-color: white; /* Background color of the box */
+        padding: 20px 20px;
+       
+        border-radius: 30px;
+    }
+
+    /* Theory Section */
+    .theory-section {
+        flex: 1; /* Takes half the width of the container */
+        color: #000;
+        padding: 20px;
+    }
+  
+
+
+    /* Box Section */
+    .box-section {
+        width: 50%; /* Makes the box section half of the container width */
+        height: 500px; /* Making it a square box */
+        background-color: orange; /* Box background color */
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative; /* Allows for absolute positioning of the image */
+    }
+
+    /* Image inside the box */
+    .box-section img {
+        position: relative; /* Position the image absolutely */
+         /* Align the image to the bottom */
+        width: auto; /* Makes the image stretch to the width of the box */
+        height: 450px; /* Maintain aspect ratio of the image */
+        border-radius: 10px; /* Rounded corner for bottom-right */
+        align-items: center;
+
+
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 50%;
+        top: 12%;
+        width: 50%;
+        overflow: auto;
+        font-weight: 600;
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 10px;
+        border: 1px solid #888;
+        width: 40%;
+        border-radius: 8px;
+        background-color: white;
+        color:black;
+    }
+
+    
+#output h2 {
+    color:black;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+#output h3 {
+    font-size: 18px;
+    color:black;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+#output ul {
+    text-align: left;
+    padding-left: 20px;
+}
+
+#output ul li {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 8px;
+}
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .close:hover, .close:focus {
+        color:red;
+        text-decoration: none;
+    }
+    .one-step-back{
+      top: 10px;
+      left: 10px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      padding: 10px 15px;
+    }
+    .one-step-back :hover{
+        background-color: #1d78c1;
+        transform: scale(1.05);
+    }
+    .one-step-back a{
+        color: #fff;
+    }
+
+</style>
+</head>
+<body>
+    <section class="whole">
+        <!-- Theory Section -->
+        <div class="theory-section">
+
+            <h1>Job Role Prediction</h1>
+
+            <!-- Step 1: Basic Information -->
+            <form id="step1Form" class="step-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+        
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+        
+                <label for="department">Department:</label>
+                <select id="department" required>
+
+                    <option value=""></option>
+                    <option value="CSE">Computer Science Engineering (CSE)</option>
+                    <option value="EEE">Electrical and Electronics Engineering (EEE)</option>
+                    <option value="Mech">Mechanical Engineering (Mech)</option>
+                    <option value="Civil">Civil Engineering (Civil)</option>
+                    <option value="Agri">Agricultural Engineering (Agri)</option>
+                    <option value="AE">Aerospace Engineering (AE)</option>
+                    <option value="Robotic">Robotics Engineering</option>
+                    <option value="Chemical">Chemical Engineering</option>
+                </select>
+        
+                <label for="skills">Skills (comma separated):</label>
+                <input type="text" id="skills" placeholder="Enter your skills" required><br>
+        
+                <button type="button" id="nextStep">Next</button>
+                 
+            </form>
+        
+            <!-- Step 2: Project Details -->
+            <form id="step2Form" class="step-form" style="display: none;">
+            <div id="projectSection">
+                    <div class="project">
+                <label for="projectTitle">Project Title:</label>
+                <input type="text" id="projectTitle" placeholder="Enter your project title (optional)">
+        
+                <label for="projectTech">Using Technology:</label>
+                <input type="text" id="projectTech" placeholder="Enter technology used (e.g., React, Node.js)">
+        
+                <label for="projectDesc">Brief Explanation:</label>
+                <textarea id="projectDesc" placeholder="Brief explanation of the project (optional)"></textarea>
+               </div>
+                </div>
+
+                <button type="button" id="addProject">Add Another Project</button>
+                <button type="button" id="predictJob">Predict Job</button>
+                <div class="one-step-back">
+                    <button type="button"><a href="index.html">Back</a></button>
+                </div>
+            </form>
+        
+            <div id="output" class="modal">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <h2>Your Results</h2><br>
+                    <h3>Skill-Based Your Roles</h3>
+                    <ol id="skillBasedList"></ol>
+                    <h3>Project-Based Your Roles</h3>
+                    <ol id="projectBasedList"></ol>
+                    <br><br>
+                    <h4>Thank You</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Box Section (Square Box with Image) -->
+        <div class="box-section">
+            <!-- Image inside the box, aligned to the bottom -->
+            <img src="pic5.png" alt="Image at the bottom of the box">
+        </div>
+    </section>
+  <button class="back-button" onclick="history.back()">Back</button>
+    <script src="script.js"></script>
+    <script>
+// Function to Display Results in Modal
+function displayResults(skillBasedRoles, projectBasedRoles) {
+    const modal = document.getElementById("output");
+    const skillList = document.getElementById("skillBasedList");
+    const projectList = document.getElementById("projectBasedList");
+
+    skillList.innerHTML = '';
+    projectList.innerHTML = '';
+
+    skillBasedRoles.forEach(role => {
+        const listItem = document.createElement("li");
+        listItem.textContent = role;
+        skillList.appendChild(listItem);
+    });
+
+    projectBasedRoles.forEach(role => {
+        const listItem = document.createElement("li");
+        listItem.textContent = role;
+        projectList.appendChild(listItem);
+    });
+
+    modal.style.display = "block";
+
+    document.getElementById("closeModal").onclick = function () {
+        modal.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+}
+
+document.getElementById("addProject").addEventListener("click", function () {
+    const projectSection = document.getElementById("projectSection");
+    const projectCount = projectSection.children.length + 1;
+
+    const newProject = document.createElement("div");
+    newProject.classList.add("project");
+
+    newProject.innerHTML = `
+        <label for="projectTitle">Project ${projectCount} Title:</label>
+        <input type="text" class="projectTitle" placeholder="Enter project title (optional)">
+
+        <label for="projectTech">Using Technology:</label>
+        <input type="text" class="projectTech" placeholder="Enter technology used (e.g., React, Node.js)">
+
+        <label for="projectDesc">Brief Explanation:</label>
+        <textarea class="projectDesc" placeholder="Brief explanation of the project (optional)"></textarea>
+    `;
+
+    projectSection.appendChild(newProject);
+});
+
+function showForm() {
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('formPage').style.display = 'block';
+}
+
+function showLandingPage() {
+    document.getElementById('formPage').style.display = 'none';
+    document.getElementById('landingPage').style.display = 'flex';
+}
+    </script>
+</body>
+</html>

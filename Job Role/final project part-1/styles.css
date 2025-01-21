@@ -1,0 +1,147 @@
+/* General Body Styling */
+*{
+    font-family: 'poppins', sans-serif;
+}
+body {
+    text-align: center;
+    margin-top: 50px;
+    background-color: #fffefefd;
+    color: #333;
+}
+
+/* Header Styling */
+h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+/* Form Styling */
+.step-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    margin: 20px 40px 20px 40px;
+    margin-bottom: 20px;
+}
+.back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background-color: #0056b3;
+    }
+
+label {
+    display: flex;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: 700;
+}
+
+input, select, textarea {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #ddd;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+}
+
+/* Add Project Button */
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+button a{
+    text-decoration: none;
+
+}
+
+button:hover {
+    background-color: #1d78c1;
+    transform: scale(1.05);
+}
+
+/* Output Section */
+
+
+
+/* Project Section Styling */
+.project {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px dashed #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.project:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.project label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.project input, .project textarea {
+    margin-bottom: 10px;
+}
+
+#addProject {
+    background-color: #2ecc71;
+    margin-bottom: 15px;
+}
+
+#addProject:hover {
+    background-color: #27ae60;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .step-form, #output {
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    #output h2 {
+        font-size: 20px;
+    }
+
+    #output h3 {
+        font-size: 16px;
+    }
+
+    #output ul li {
+        font-size: 12px;
+    }
+}
